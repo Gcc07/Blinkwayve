@@ -1,0 +1,41 @@
+[gd_scene load_steps=9 format=3 uid="uid://dghxy6o5jnawy"]
+
+[ext_resource type="Script" uid="uid://bdp6wl5dpnfc5" path="res://Global/Player/player.gd" id="1_7fgh7"]
+[ext_resource type="Texture2D" uid="uid://by8lffjicck6f" path="res://Assets/Spright.png" id="2_usju2"]
+[ext_resource type="PackedScene" uid="uid://c2njkfc01sgji" path="res://Global/StateMachines/move_state_machine.tscn" id="3_usju2"]
+[ext_resource type="Script" uid="uid://bybtb1c113b3d" path="res://Global/PublicStates/Movement/idle.gd" id="4_v7ewn"]
+[ext_resource type="Script" uid="uid://b5fv7ncb7fxtg" path="res://Global/PublicStates/Movement/dash.gd" id="5_yhqop"]
+[ext_resource type="Script" uid="uid://vdwjy5ar2b6m" path="res://Global/PublicStates/Movement/move.gd" id="6_wf84g"]
+[ext_resource type="Script" uid="uid://bhrw02juhlg76" path="res://Global/Player/player_move_component.gd" id="7_55fbt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kpjcp"]
+radius = 6.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_7fgh7")
+entity_id = "Player"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_kpjcp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_usju2")
+
+[node name="MoveStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("3_usju2")]
+starting_state = NodePath("idle")
+
+[node name="idle" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("dash_state", "move_state")]
+script = ExtResource("4_v7ewn")
+dash_state = NodePath("../dash")
+move_state = NodePath("../move")
+
+[node name="dash" type="Node" parent="MoveStateMachine"]
+script = ExtResource("5_yhqop")
+
+[node name="move" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("idle_state", "dash_state")]
+script = ExtResource("6_wf84g")
+idle_state = NodePath("../idle")
+dash_state = NodePath("../dash")
+
+[node name="PlayerMoveComponent" type="Node" parent="."]
+script = ExtResource("7_55fbt")

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://jmnf0fy8c8di"]
+
+[ext_resource type="Script" uid="uid://bfnol27fikunc" path="res://Global/Classes/hitbox.gd" id="1_0rjiw"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xyt0e"]
+radius = 5.0
+height = 14.0
+
+[node name="Hitbox" type="Area2D"]
+script = ExtResource("1_0rjiw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_xyt0e")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2njkfc01sgji"]
+
+[ext_resource type="Script" uid="uid://51t4n1qx0rr7" path="res://Global/StateMachines/move_state_machine.gd" id="1_n2lvp"]
+
+[node name="MoveStateMachine" type="Node2D"]
+script = ExtResource("1_n2lvp")

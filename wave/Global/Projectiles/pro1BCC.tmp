@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://be3mpsirj8rwt"]
+
+[ext_resource type="Texture2D" uid="uid://cca0o8n8lhrcp" path="res://Assets/Art/slice_1.png" id="1_5a26v"]
+[ext_resource type="Script" path="res://Global/Projectiles/projectile.gd" id="1_x0qej"]
+[ext_resource type="Script" path="res://Global/Components/hurtbox.gd" id="3_1lnlt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qwxay"]
+size = Vector2(1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbbeq"]
+size = Vector2(1, 1)
+
+[node name="Projectile" type="CharacterBody2D" node_paths=PackedStringArray("hurtbox", "timer", "sprite", "collision_shape", "hurtbox_shape")]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_x0qej")
+hurtbox = NodePath("ProjectileHurtbox")
+timer = NodePath("Timer")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+hurtbox_shape = NodePath("ProjectileHurtbox/CollisionShape2D")
+hurtbox_size_equals_sprite = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("1_5a26v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qwxay")
+debug_color = Color(0.228855, 0.508907, 1, 0.42)
+
+[node name="ProjectileHurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("3_1lnlt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ProjectileHurtbox"]
+shape = SubResource("RectangleShape2D_lbbeq")
+debug_color = Color(0.910174, 0.248337, 0.423644, 0.42)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
