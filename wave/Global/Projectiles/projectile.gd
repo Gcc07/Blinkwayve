@@ -16,6 +16,8 @@ extends CharacterBody2D
 @onready var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var pierces_left : int
 @onready var applied_initial_velocity = false
+@onready var initial_scale : Vector2
+var elapsed_time : float = 0.0
 
 func _ready() -> void:
 
@@ -23,6 +25,7 @@ func _ready() -> void:
 	initialize_color_modulation(projectile_resource.modulate_color)
 	initialize_outline_color_modulation(projectile_resource.modulate_outline_color)
 	init_scale(projectile_resource.scale_factor.x, projectile_resource.scale_factor.y)
+	initial_scale = self.scale
 	initialize_collision_and_hurtbox_shapes(projectile_resource.collision_shape, projectile_resource.hurtbox_shape)
 	set_collision_size_equals_sprite(projectile_resource.collision_size_corresponds_to_sprite)
 	set_hurtbox_size_equals_sprite(projectile_resource.hurtbox_size_corresponds_to_sprite)
@@ -32,7 +35,6 @@ func _ready() -> void:
 	initialize_projectile_frames(projectile_resource.num_of_frames)
 	setup_projectile_animation()
 	start_animation(projectile_resource.animation_is_continous)
-	
 	initialize_is_friendly(projectile_resource.is_friendly)
 	start_timer()
 
@@ -41,6 +43,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	control_projectile_animations(projectile_resource.has_animation, projectile_resource.animation_is_continous)
+
+
 
 var current_pierce_count := 0
 
@@ -178,15 +182,15 @@ func start_animation(continuous: bool):
 # Revamp.
 
 func _physics_process(delta: float) -> void:
+	elapsed_time += delta
 	do_rotation(delta)
-	init_scale(projectile_resource.scale_factor.x, projectile_resource.scale_factor.y)
+	modify_scale_linearly(projectile_resource.scale_growth_rate)
 	
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		if collision.get_collider().name == "TileMapLayer":
 			destroy_projectile()
 
-	
 	if !applied_initial_velocity:
 		self.velocity.y = -300
 		applied_initial_velocity = true
@@ -239,6 +243,40 @@ func init_scale(incoming_scale_x, incoming_scale_y):
 	self.scale.x = incoming_scale_x
 	self.scale.y = incoming_scale_y
 
+## Modifies the scale of the projectile 
+## If scale_curve is set, uses curve-based scaling. Otherwise uses linear growth_rate.
+func modify_scale_linearly(growth_rate):
+	if projectile_resource.scale_curve != null and projectile_resource.time_to_live > 0:
+		# Use curve-based scaling
+		var normalized_time = elapsed_time / projectile_resource.time_to_live
+		normalized_time = clamp(normalized_time, 0.0, 1.0)
+		
+		# Sample the curve - ensure it returns a valid value
+		var scale_multiplier = projectile_resource.scale_curve.sample(normalized_time)
+		if scale_multiplier <= 0:
+			scale_multiplier = 0.001  # Prevent zero or negative scale
+		
+		# Apply scale multiplier to initial scale factor
+		var base_scale_x = abs(projectile_resource.scale_factor.x)
+		var base_scale_y = abs(projectile_resource.scale_factor.y)
+		
+		var new_scale_x = base_scale_x * scale_multiplier
+		var new_scale_y = base_scale_y * scale_multiplier
+		
+		# Preserve sign of scale.x for direction (use scale_factor to determine sign)
+		if projectile_resource.scale_factor.x < 0:
+			self.scale.x = -new_scale_x
+		else:
+			self.scale.x = new_scale_x
+		self.scale.y = new_scale_y
+	else:
+		# Use linear growth rate (original method)
+		if self.scale.x < 0:
+			self.scale.x -= growth_rate/100
+		else:
+			self.scale.x += growth_rate/100
+		self.scale.y += growth_rate/100
+	
 func initialize_data():
 	pierces_left = projectile_resource.max_pierce
 

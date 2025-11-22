@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="ProjectileResource" load_steps=4 format=3 uid="uid://nk2410o523or"]
+
+[ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="1_cbn2q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_78vxg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_cbn2q")
+ID = "Rasengan"
+stick_to_parent = false
+is_friendly = true
+damage = 5.0
+stuns = true
+max_pierce = 1
+time_to_live = 1.0
+collision_shape = SubResource("CircleShape2D_78vxg")
+hurtbox_shape = SubResource("CircleShape2D_isqt6")
+rotate_collision_shape = 0.0
+rotate_hurtbox_shape = 0.0
+collision_size_corresponds_to_sprite = true
+hurtbox_size_corresponds_to_sprite = true
+breaks_on_collision = false
+sprite_texture = "uid://b0qi6rj2rhng2"
+num_of_frames = 1
+animation_is_continous = false
+has_animation = false
+parent_offset = Vector2(0, 0)
+scale_factor = Vector2(0.1, 0.1)
+scale_growth_rate = 1.5
+initial_velocity = Vector2(0, 0)
+affected_by_gravity = false
+speed = 0.0
+acceleration = 0.0
+spin_speed = 2.0
+modulate_color = Color(0, 0, 0, 0)
+modulate_outline_color = Color(1, 1, 1, 1)
+metadata/_custom_type_script = "uid://ch13tt26l8qwb"

@@ -11,4 +11,6 @@ func get_action_input_as_string() -> String:
 		return "charge_attack"
 	if Input.is_action_just_pressed("parry"):
 		return "parry"
+	if Input.is_action_just_pressed("dash_attack"):
+		return "dash_attack"
 	return ""

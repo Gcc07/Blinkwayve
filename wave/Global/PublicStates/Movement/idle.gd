@@ -10,7 +10,9 @@ var move_state: MovementState
 
 func enter() -> void:
 	super()
-	parent.velocity.x = 0
+	moveAnimations.play("RESET")
+	parent.can_dash = true
+	
 
 func process_input(event: InputEvent) -> MovementState:
 	if get_movement_input_x() != 0.0:
@@ -18,7 +20,8 @@ func process_input(event: InputEvent) -> MovementState:
 	if get_movement_input_y() != 0.0:
 		return move_state
 	if Input.is_action_just_pressed('dash'):
-		return dash_state
+		if parent.can_dash:
+			return dash_state
 	return null
 
 func process_physics(delta: float) -> MovementState:

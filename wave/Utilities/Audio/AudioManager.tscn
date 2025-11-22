@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://dygk5a7g1wqk7"]
+[gd_scene load_steps=4 format=3 uid="uid://dygk5a7g1wqk7"]
 
 [ext_resource type="Script" uid="uid://cbfqmshc8t35k" path="res://Utilities/Audio/AudioManager.gd" id="1_ilgda"]
+[ext_resource type="Script" uid="uid://dwm1drlnk2yp1" path="res://Utilities/Audio/Resources/sound_effect.gd" id="2_cr1dt"]
+
+[sub_resource type="Resource" id="Resource_cr1dt"]
+script = ExtResource("2_cr1dt")
+limit = 5
+type = 0
+volume = 0.0
+pitch_scale = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://dwm1drlnk2yp1"
 
 [node name="AudioManager" type="Node2D"]
 script = ExtResource("1_ilgda")
+sound_effects = Array[ExtResource("2_cr1dt")]([SubResource("Resource_cr1dt")])

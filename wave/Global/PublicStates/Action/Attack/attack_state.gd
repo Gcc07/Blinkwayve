@@ -18,6 +18,7 @@ func get_action_input_as_string() -> String:
 	return action_component.get_attack_input()
 
 func enter() -> void:
+	parent.can_dash = false
 	spawn_corresponding_projectile()
 	# Overwriting the enter statements in the action state
 	if not parent.hitbox.is_connected("damaged", _on_hitbox_damaged): # If the hitbox isn't connected,
@@ -25,14 +26,18 @@ func enter() -> void:
 
 	parent.can_move = allow_movement
 	finished_attack = false
-	if moveAnimations != null:
+	if moveAnimations != null and animation_name != "":
 		moveAnimations.active = false
-	if actionAnimations != null:
+	if actionAnimations != null and animation_name != "":
 		actionAnimations.active = true
-		actionAnimations.play(str(parent.entity_id)+"Action/" + animation_name)
+		actionAnimations.play(str(parent.entity_id)+"_Action_Animations/" + animation_name)
+	if animation_name == "":
+		attack_finished()
+
 
 func exit() -> void:
-	actionAnimations.active = false
+	if actionAnimations != null:
+		actionAnimations.active = false
 
 func process_physics(delta: float) -> ActionState:
 	if not parent.alive:
@@ -58,12 +63,10 @@ func spawn_corresponding_projectile():
 	var spawned_projectile : = projectile.instantiate() # Instantiates the projectile created by player light attack.
 	spawned_projectile.projectile_resource = attack_projectile_resource
 	if sprite.flip_h == false: #   IF THE ENTITY IS FACING RIGHT
-		spawned_projectile.projectile_resource.scale_factor.x = 1
-		spawned_projectile.scale.x = 1
+		spawned_projectile.projectile_resource.scale_factor.x = spawned_projectile.projectile_resource.scale_factor.x * 1
 		#print("projectile scale: should be 1, is ", spawned_projectile.scale.x)
 	elif sprite.flip_h == true: # IF THE ENTITY IS FACING LEFT       
-		spawned_projectile.projectile_resource.scale_factor.x = -1  
-		spawned_projectile.scale.x = -1
+		spawned_projectile.projectile_resource.scale_factor.x = spawned_projectile.projectile_resource.scale_factor.x * -1  
 		#print("projectile scale: should be -1, is ", spawned_projectile.scale.x)
 	#print(spawned_projectile.scale.x)
 	if spawned_projectile.projectile_resource.stick_to_parent == true: # If the projectile is a slash or similarly behaving

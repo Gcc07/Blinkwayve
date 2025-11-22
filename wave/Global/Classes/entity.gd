@@ -6,6 +6,8 @@ extends CharacterBody2D
 @export var entity_id := ""
 @export var alive := true
 @export var can_move := true
+@export var can_attack := true
+@export var can_dash := true
 @export var hostile := true
 @export var can_be_damaged := true
 @export var stunned := false

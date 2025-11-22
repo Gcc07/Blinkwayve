@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="ProjectileResource" load_steps=5 format=3 uid="uid://dc6e0euwdj82n"]
+
+[ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="1_4njmf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2nylj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l8rai"]
+
+[sub_resource type="Curve" id="Curve_55od0"]
+_limits = [-50.0, 50.0, 0.0, 2.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.152174, 3.76344), 0.0, 0.0, 0, 0, Vector2(0.826087, -5.91398), -3.957, -3.957, 0, 0]
+point_count = 3
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_4njmf")
+ID = "Rasengan"
+stick_to_parent = false
+is_friendly = true
+damage = 5.0
+stuns = true
+max_pierce = 1
+time_to_live = 1.0
+collision_shape = SubResource("CircleShape2D_2nylj")
+hurtbox_shape = SubResource("CircleShape2D_l8rai")
+rotate_collision_shape = 0.0
+rotate_hurtbox_shape = 0.0
+collision_size_corresponds_to_sprite = true
+hurtbox_size_corresponds_to_sprite = true
+breaks_on_collision = false
+sprite_texture = "uid://b0qi6rj2rhng2"
+num_of_frames = 1
+animation_is_continous = false
+has_animation = false
+parent_offset = Vector2(0, 0)
+scale_factor = Vector2(0.1, 0.1)
+scale_growth_rate = 1.5
+scale_curve = SubResource("Curve_55od0")
+initial_velocity = Vector2(0, 0)
+affected_by_gravity = false
+speed = 0.0
+acceleration = 0.0
+spin_speed = 2.0
+modulate_color = Color(0.172549, 0.909804, 0.960784, 1)
+modulate_outline_color = Color(0.172549, 0.909804, 0.960784, 1)
+metadata/_custom_type_script = "uid://ch13tt26l8qwb"

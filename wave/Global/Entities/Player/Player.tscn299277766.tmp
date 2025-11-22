@@ -1,0 +1,109 @@
+[gd_scene load_steps=20 format=3 uid="uid://dghxy6o5jnawy"]
+
+[ext_resource type="Script" uid="uid://bdp6wl5dpnfc5" path="res://Global/Entities/Player/player.gd" id="1_7fgh7"]
+[ext_resource type="Shader" uid="uid://cre0xoj0afvnk" path="res://Assets/Shaders/pixel_outline.gdshader" id="1_78vxg"]
+[ext_resource type="PackedScene" uid="uid://jmnf0fy8c8di" path="res://Global/Classes/hitbox.tscn" id="2_qe8n5"]
+[ext_resource type="Texture2D" uid="uid://by8lffjicck6f" path="res://Assets/Spright.png" id="2_usju2"]
+[ext_resource type="PackedScene" uid="uid://c2njkfc01sgji" path="res://Global/StateMachines/move_state_machine.tscn" id="3_usju2"]
+[ext_resource type="Material" uid="uid://dl7t4hg0eq8v5" path="res://Assets/Shaders/entity_pixel_shader.tres" id="4_isqt6"]
+[ext_resource type="Script" uid="uid://bybtb1c113b3d" path="res://Global/PublicStates/Movement/idle.gd" id="4_v7ewn"]
+[ext_resource type="Script" uid="uid://2wc1hd1lcfeq" path="res://Global/Entities/Player/player_attack_component.gd" id="5_j2bwr"]
+[ext_resource type="Script" uid="uid://b5fv7ncb7fxtg" path="res://Global/PublicStates/Movement/dash.gd" id="5_yhqop"]
+[ext_resource type="Script" uid="uid://vdwjy5ar2b6m" path="res://Global/PublicStates/Movement/move.gd" id="6_wf84g"]
+[ext_resource type="Script" uid="uid://bhrw02juhlg76" path="res://Global/Entities/Player/player_move_component.gd" id="7_55fbt"]
+[ext_resource type="PackedScene" uid="uid://07qnueve2in3" path="res://Global/StateMachines/action_state_machine.tscn" id="8_yhqop"]
+[ext_resource type="Script" uid="uid://swrkuwy8kc7r" path="res://Global/PublicStates/Action/none_action_state.gd" id="9_55fbt"]
+[ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="10_ncjne"]
+[ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="13_2yk6h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_isqt6"]
+shader = ExtResource("1_78vxg")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 1.0
+shader_parameter/alpha_threshold = 0.0
+shader_parameter/outline_samples = 4
+shader_parameter/shade_color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_78vxg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
+
+[sub_resource type="Resource" id="Resource_ygpja"]
+script = ExtResource("13_2yk6h")
+ID = "Rasengan"
+stick_to_parent = false
+is_friendly = true
+damage = 5.0
+stuns = true
+max_pierce = 1
+time_to_live = 10.0
+collision_shape = SubResource("CircleShape2D_78vxg")
+hurtbox_shape = SubResource("CircleShape2D_isqt6")
+rotate_collision_shape = 0.0
+rotate_hurtbox_shape = 0.0
+collision_size_corresponds_to_sprite = true
+hurtbox_size_corresponds_to_sprite = true
+breaks_on_collision = false
+sprite_texture = "uid://b0qi6rj2rhng2"
+num_of_frames = 1
+animation_is_continous = false
+has_animation = false
+parent_offset = Vector2(0, 0)
+scale_factor = Vector2(1, 1)
+initial_velocity = Vector2(0, 0)
+affected_by_gravity = false
+speed = 0.0
+acceleration = 0.0
+spin_speed = 0.0
+modulate_color = Color(0, 0, 0, 0)
+modulate_outline_color = Color(0.106, 0.122, 0.129, 1)
+metadata/_custom_type_script = "uid://ch13tt26l8qwb"
+
+[node name="Player" type="CharacterBody2D"]
+material = SubResource("ShaderMaterial_isqt6")
+script = ExtResource("1_7fgh7")
+entity_id = "Player"
+
+[node name="AttackPoint" type="Node2D" parent="."]
+
+[node name="Hitbox" parent="." instance=ExtResource("2_qe8n5")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("4_isqt6")
+texture = ExtResource("2_usju2")
+
+[node name="PlayerMoveComponent" type="Node" parent="."]
+script = ExtResource("7_55fbt")
+
+[node name="PlayerActionComponent" type="Node" parent="."]
+script = ExtResource("5_j2bwr")
+
+[node name="MoveStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("3_usju2")]
+starting_state = NodePath("idle")
+
+[node name="idle" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("dash_state", "move_state")]
+script = ExtResource("4_v7ewn")
+dash_state = NodePath("../dash")
+move_state = NodePath("../move")
+
+[node name="dash" type="Node" parent="MoveStateMachine"]
+script = ExtResource("5_yhqop")
+
+[node name="move" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("idle_state", "dash_state")]
+script = ExtResource("6_wf84g")
+idle_state = NodePath("../idle")
+dash_state = NodePath("../dash")
+
+[node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("8_yhqop")]
+starting_state = NodePath("none")
+
+[node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states")]
+script = ExtResource("9_55fbt")
+action_states = [NodePath("../attack")]
+action_name = "none"
+
+[node name="attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+script = ExtResource("10_ncjne")
+none_state = NodePath("../none")
+attack_projectile_resource = SubResource("Resource_ygpja")
+action_name = "normal_attack"

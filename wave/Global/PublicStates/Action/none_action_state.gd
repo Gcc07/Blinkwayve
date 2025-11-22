@@ -9,7 +9,8 @@ extends ActionState
 var parry_state : ActionState
 
 func enter() -> void:
-	
+	parent.can_dash = true
+	parent.can_attack = true
 	parent.can_move = true
 	if actionAnimations != null:
 		actionAnimations.active = false
@@ -22,6 +23,7 @@ func _on_hitbox_damaged(attack: Attack):
 
 func process_physics(delta: float) -> ActionState:
 	for action in action_states:
+		print(get_action_input_as_string())
 		#print(get_action_input_as_string(), " ", action.action_name)
 		if get_action_input_as_string() == action.action_name:
 			return action

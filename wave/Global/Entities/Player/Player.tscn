@@ -1,9 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://dghxy6o5jnawy"]
+[gd_scene load_steps=29 format=3 uid="uid://dghxy6o5jnawy"]
 
 [ext_resource type="Script" uid="uid://bdp6wl5dpnfc5" path="res://Global/Entities/Player/player.gd" id="1_7fgh7"]
+[ext_resource type="Shader" uid="uid://cre0xoj0afvnk" path="res://Assets/Shaders/pixel_outline.gdshader" id="1_78vxg"]
 [ext_resource type="PackedScene" uid="uid://jmnf0fy8c8di" path="res://Global/Classes/hitbox.tscn" id="2_qe8n5"]
 [ext_resource type="Texture2D" uid="uid://by8lffjicck6f" path="res://Assets/Spright.png" id="2_usju2"]
 [ext_resource type="PackedScene" uid="uid://c2njkfc01sgji" path="res://Global/StateMachines/move_state_machine.tscn" id="3_usju2"]
+[ext_resource type="AnimationLibrary" uid="uid://bhswa3utj4vpb" path="res://Global/Entities/Player/Sprecho_Move.res" id="3_ygpja"]
+[ext_resource type="AnimationLibrary" uid="uid://ft72v8srxujd" path="res://Global/Entities/Player/Sprecho_Action_Animations.res" id="4_2nylj"]
 [ext_resource type="Script" uid="uid://bybtb1c113b3d" path="res://Global/PublicStates/Movement/idle.gd" id="4_v7ewn"]
 [ext_resource type="Script" uid="uid://2wc1hd1lcfeq" path="res://Global/Entities/Player/player_attack_component.gd" id="5_j2bwr"]
 [ext_resource type="Script" uid="uid://b5fv7ncb7fxtg" path="res://Global/PublicStates/Movement/dash.gd" id="5_yhqop"]
@@ -13,12 +16,152 @@
 [ext_resource type="Script" uid="uid://swrkuwy8kc7r" path="res://Global/PublicStates/Action/none_action_state.gd" id="9_55fbt"]
 [ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="10_ncjne"]
 [ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="13_2yk6h"]
+[ext_resource type="Texture2D" uid="uid://d2tjr0rsfvuhh" path="res://Assets/dash_orb.png" id="17_2nylj"]
+[ext_resource type="Resource" uid="uid://dc6e0euwdj82n" path="res://Global/Entities/Player/dash_attack_projectile.tres" id="17_55od0"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_78vxg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_isqt6"]
+shader = ExtResource("1_78vxg")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 1.0
+shader_parameter/alpha_threshold = 0.0
+shader_parameter/outline_samples = 4
+shader_parameter/shade_color = Color(1, 1, 1, 0.5)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
+[sub_resource type="Animation" id="Animation_2nylj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Sprite2D:material:shader_parameter/shade_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
 
-[sub_resource type="Resource" id="Resource_ygpja"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l8rai"]
+_data = {
+&"RESET": SubResource("Animation_2nylj")
+}
+
+[sub_resource type="Animation" id="Animation_ygpja"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nylj"]
+_data = {
+&"RESET": SubResource("Animation_ygpja")
+}
+
+[sub_resource type="Shader" id="Shader_78vxg"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+// === User Controls ===
+
+// Color of the outline
+uniform vec4 outline_color    : source_color = vec4(1.0);
+// How far to search around a pixel for solid neighbors (in texels)
+uniform float outline_size    : hint_range(0.0, 16.0, 0.1) = 1.0;
+// Minimum alpha for a pixel to be considered solid
+uniform float alpha_threshold : hint_range(0.0, 1.0, 0.01) = 0.0;
+// Number of directions to sample from (max 8)
+uniform int outline_samples   : hint_range(4, 8) = 4;
+// Color to blend with solid pixels (alpha is blend strength)
+uniform vec4 shade_color      : source_color = vec4(1.0, 1.0, 1.0, .5);
+
+// === Outline Sampling Directions ===
+
+const vec2[8] DIRS = vec2[8]
+(vec2(1.0, 0.0), vec2(0.0, 1.0),  vec2(-1.0, 0.0),  vec2(0.0, -1.0),
+ vec2(1.0, 1.0), vec2(-1.0, 1.0), vec2(-1.0, -1.0), vec2(1.0, -1.0));
+
+// === Main Fragment ===
+
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV);
+	float alpha = tex.a;
+
+	 // Skip fully transparent pixel with no outline
+	if (alpha <= 0.0 && outline_size <= 0.0) discard;
+
+	bool solid = alpha > alpha_threshold;
+	bool semi  = (alpha > 0.0) && !solid;
+	vec4 out_color = tex;
+
+	// Blend solid pixels toward the shade_color based on its alpha
+	if (solid && shade_color.a > 0.0) {
+		out_color.rgb = mix(tex.rgb, shade_color.rgb, shade_color.a);
+		out_color.a   = alpha;
+	}
+
+	bool found = false;
+
+	// If not solid, check surrounding pixels for solid neighbors
+	if (!solid && outline_size > 0.0) {
+		vec2 offset = TEXTURE_PIXEL_SIZE * outline_size;
+		for (int i = 0; i < outline_samples; i++) {
+			if (texture(TEXTURE, UV + DIRS[i] * offset).a > alpha_threshold) {
+				found = true;
+				break;
+			}
+		}
+	}
+
+	// Set final pixel color
+	if      (solid) COLOR = out_color;
+	else if (found) COLOR = outline_color;
+	else if (semi)  COLOR = tex;
+	else            discard;
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygpja"]
+resource_local_to_scene = true
+shader = SubResource("Shader_78vxg")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 1.0
+shader_parameter/alpha_threshold = 0.0
+shader_parameter/outline_samples = 4
+shader_parameter/shade_color = Color(1, 1, 1, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l8rai"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_55od0"]
+
+[sub_resource type="Resource" id="Resource_hih3k"]
+resource_local_to_scene = true
 script = ExtResource("13_2yk6h")
 ID = "Rasengan"
 stick_to_parent = false
@@ -26,9 +169,9 @@ is_friendly = true
 damage = 5.0
 stuns = true
 max_pierce = 1
-time_to_live = 10.0
-collision_shape = SubResource("CircleShape2D_78vxg")
-hurtbox_shape = SubResource("CircleShape2D_isqt6")
+time_to_live = 1.0
+collision_shape = SubResource("CircleShape2D_l8rai")
+hurtbox_shape = SubResource("CircleShape2D_55od0")
 rotate_collision_shape = 0.0
 rotate_hurtbox_shape = 0.0
 collision_size_corresponds_to_sprite = true
@@ -39,25 +182,44 @@ num_of_frames = 1
 animation_is_continous = false
 has_animation = false
 parent_offset = Vector2(0, 0)
-scale_factor = Vector2(1, 1)
+scale_factor = Vector2(0.1, 0.1)
+scale_growth_rate = 1.5
 initial_velocity = Vector2(0, 0)
 affected_by_gravity = false
 speed = 0.0
 acceleration = 0.0
-spin_speed = 0.0
+spin_speed = 2.0
 modulate_color = Color(0, 0, 0, 0)
-modulate_outline_color = Color(0.106, 0.122, 0.129, 1)
+modulate_outline_color = Color(1, 1, 1, 1)
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Sprecho" type="CharacterBody2D"]
+material = SubResource("ShaderMaterial_isqt6")
 script = ExtResource("1_7fgh7")
-entity_id = "Player"
+entity_id = "Sprecho"
+
+[node name="MoveAnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../MoveStateMachine/dash")
+libraries = {
+&"": SubResource("AnimationLibrary_l8rai"),
+&"Sprecho_Move_Animations": ExtResource("3_ygpja")
+}
+autoplay = "RESET"
+
+[node name="ActionAnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../MoveStateMachine/dash")
+libraries = {
+&"": SubResource("AnimationLibrary_2nylj"),
+&"Sprecho_Action_Animations": ExtResource("4_2nylj")
+}
+autoplay = "Sprecho_animations/idle"
 
 [node name="AttackPoint" type="Node2D" parent="."]
 
 [node name="Hitbox" parent="." instance=ExtResource("2_qe8n5")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ygpja")
 texture = ExtResource("2_usju2")
 
 [node name="PlayerMoveComponent" type="Node" parent="."]
@@ -73,25 +235,47 @@ starting_state = NodePath("idle")
 script = ExtResource("4_v7ewn")
 dash_state = NodePath("../dash")
 move_state = NodePath("../move")
-
-[node name="dash" type="Node" parent="MoveStateMachine"]
-script = ExtResource("5_yhqop")
+animation_name = "idle"
 
 [node name="move" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("idle_state", "dash_state")]
 script = ExtResource("6_wf84g")
 idle_state = NodePath("../idle")
 dash_state = NodePath("../dash")
+move_speed = 200.0
+animation_name = "move"
+
+[node name="dash" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("move_state")]
+script = ExtResource("5_yhqop")
+move_state = NodePath("../move")
+move_speed = 500.0
+animation_name = "dash"
 
 [node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("8_yhqop")]
 starting_state = NodePath("none")
 
 [node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states")]
 script = ExtResource("9_55fbt")
-action_states = [NodePath("../attack")]
+action_states = [NodePath("../dash_attack"), NodePath("../primary")]
 action_name = "none"
 
-[node name="attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+[node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
 script = ExtResource("10_ncjne")
+allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resource = SubResource("Resource_ygpja")
+attack_projectile_resource = SubResource("Resource_hih3k")
 action_name = "normal_attack"
+animation_name = "primary_attack"
+
+[node name="dash_attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+script = ExtResource("10_ncjne")
+allow_movement = true
+none_state = NodePath("../none")
+attack_projectile_resource = ExtResource("17_55od0")
+action_name = "dash_attack"
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(0, 16)
+texture = ExtResource("17_2nylj")
+region_enabled = true
+region_rect = Rect2(0, 0, 6, 6)

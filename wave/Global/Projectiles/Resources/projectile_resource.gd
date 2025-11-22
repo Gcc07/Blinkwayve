@@ -42,6 +42,11 @@ extends Resource
 @export var parent_offset = Vector2(0,0)
 ## Determines the scale factor of the projectile.
 @export var scale_factor = Vector2(1,1)
+## Determines the growth (or shrinking) of a projectile (linear method)
+@export var scale_growth_rate := 0.0
+## Curve-based scale animation over projectile lifetime (0.0 to 1.0 maps to time_to_live). If set, overrides scale_growth_rate.
+## X-axis: normalized time (0.0 = start, 1.0 = end). Y-axis: scale multiplier.
+@export var scale_curve : Curve
 ## Determines initial velocity of a projectile
 @export var initial_velocity = Vector2(0,0)
 ## Is the projectile affected by gravity
