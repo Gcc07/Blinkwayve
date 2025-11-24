@@ -19,7 +19,7 @@ func process_input(event: InputEvent) -> MovementState:
 		return move_state
 	if get_movement_input_y() != 0.0:
 		return move_state
-	if Input.is_action_just_pressed('dash'):
+	if Input.is_action_just_pressed('dash') && parent.num_of_dashes_available > 0:
 		if parent.can_dash:
 			return dash_state
 	return null

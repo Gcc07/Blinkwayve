@@ -26,6 +26,9 @@ func _ready() -> void:
 	initialize_outline_color_modulation(projectile_resource.modulate_outline_color)
 	init_scale(projectile_resource.scale_factor.x, projectile_resource.scale_factor.y)
 	initial_scale = self.scale
+	# Initialize shader alpha to 1.0 (fully visible)
+	if sprite.material and sprite.material is ShaderMaterial:
+		sprite.material.set_shader_parameter("alpha", 1.0)
 	initialize_collision_and_hurtbox_shapes(projectile_resource.collision_shape, projectile_resource.hurtbox_shape)
 	set_collision_size_equals_sprite(projectile_resource.collision_size_corresponds_to_sprite)
 	set_hurtbox_size_equals_sprite(projectile_resource.hurtbox_size_corresponds_to_sprite)
@@ -185,6 +188,7 @@ func _physics_process(delta: float) -> void:
 	elapsed_time += delta
 	do_rotation(delta)
 	modify_scale_linearly(projectile_resource.scale_growth_rate)
+	update_fade()
 	
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
@@ -276,6 +280,30 @@ func modify_scale_linearly(growth_rate):
 		else:
 			self.scale.x += growth_rate/100
 		self.scale.y += growth_rate/100
+	
+## Updates the projectile's alpha/opacity based on fade settings using shader parameter
+func update_fade() -> void:
+	if not sprite.material or not sprite.material is ShaderMaterial:
+		return
+		
+	var alpha: float = 1.0
+	
+	if projectile_resource.fade_curve != null and projectile_resource.time_to_live > 0:
+		# Use curve-based fading
+		var normalized_time = elapsed_time / projectile_resource.time_to_live
+		normalized_time = clamp(normalized_time, 0.0, 1.0)
+		alpha = projectile_resource.fade_curve.sample(normalized_time)
+		alpha = clamp(alpha, 0.0, 1.0)
+	elif projectile_resource.fade_start_time > 0.0 and elapsed_time >= projectile_resource.fade_start_time:
+		# Use simple linear fade
+		var fade_progress = (elapsed_time - projectile_resource.fade_start_time) / projectile_resource.fade_duration
+		fade_progress = clamp(fade_progress, 0.0, 1.0)
+		alpha = 1.0 - fade_progress  # Fade from 1.0 to 0.0
+	
+	# Set shader alpha parameter (use same pattern as other shader calls)
+	# Always set it, even if alpha is 1.0, to ensure it's initialized
+	if $Sprite2D.material:
+		$Sprite2D.material.set_shader_parameter("alpha", alpha)
 	
 func initialize_data():
 	pierces_left = projectile_resource.max_pierce

@@ -33,6 +33,8 @@ acceleration = 0.0
 spin_speed = 0.0
 modulate_color = Color(0, 0, 0, 0)
 modulate_outline_color = Color(0.106, 0.122, 0.129, 1)
+fade_start_time = 0.0
+fade_duration = 0.2
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
 [sub_resource type="Shader" id="Shader_joau3"]
@@ -104,6 +106,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6kw5c"]
+resource_local_to_scene = true
 shader = SubResource("Shader_joau3")
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 shader_parameter/outline_size = 1.0

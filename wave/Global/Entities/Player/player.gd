@@ -22,6 +22,8 @@ var player_move_component = $PlayerMoveComponent
 var player_action_component = $PlayerActionComponent
 
 @onready
+var num_of_dashes_available : int = 2
+@onready
 var hitbox = $Hitbox
 
 

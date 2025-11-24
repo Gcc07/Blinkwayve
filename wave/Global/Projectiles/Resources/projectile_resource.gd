@@ -61,3 +61,10 @@ extends Resource
 @export var modulate_color : Color = Color(0,0,0,0)
 ## Modulate outline color of projectile
 @export var modulate_outline_color : Color = Color(0.106, 0.122, 0.129)
+## Curve-based fade animation over projectile lifetime (0.0 to 1.0 maps to time_to_live). If set, overrides fade_start_time.
+## X-axis: normalized time (0.0 = start, 1.0 = end). Y-axis: alpha/opacity (1.0 = fully visible, 0.0 = fully transparent).
+@export var fade_curve : Curve
+## Time (in seconds) before projectile starts fading out. Set to 0 to disable fade. If fade_curve is set, this is ignored.
+@export var fade_start_time : float = 0.0
+## Fade duration in seconds (how long the fade takes). Only used if fade_curve is not set.
+@export var fade_duration : float = 0.2

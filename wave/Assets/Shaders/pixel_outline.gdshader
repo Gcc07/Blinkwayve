@@ -12,6 +12,8 @@ uniform float alpha_threshold : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform int outline_samples   : hint_range(4, 8) = 4;
 // Color to blend with solid pixels (alpha is blend strength)
 uniform vec4 shade_color      : source_color = vec4(1.0, 1.0, 1.0, .5);
+// Overall alpha/opacity multiplier for fade effects
+uniform float alpha           : hint_range(0.0, 1.0) = 1.0;
 
 // === Outline Sampling Directions ===
 
@@ -56,6 +58,9 @@ void fragment() {
 	else if (found) COLOR = outline_color;
 	else if (semi)  COLOR = tex;
 	else            discard;
+	
+	// Apply alpha fade multiplier to final color
+	COLOR.a *= alpha;
 }
 
 //void light() {

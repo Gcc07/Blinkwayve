@@ -23,8 +23,8 @@ func _on_hitbox_damaged(attack: Attack):
 
 func process_physics(delta: float) -> ActionState:
 	for action in action_states:
-		print(get_action_input_as_string())
-		#print(get_action_input_as_string(), " ", action.action_name)
+		# print(get_action_input_as_string())
+		# print(get_action_input_as_string(), " ", action.action_name)
 		if get_action_input_as_string() == action.action_name:
 			return action
 

@@ -43,4 +43,6 @@ acceleration = 0.0
 spin_speed = 2.0
 modulate_color = Color(0.172549, 0.909804, 0.960784, 1)
 modulate_outline_color = Color(0.172549, 0.909804, 0.960784, 1)
+fade_start_time = 0.0
+fade_duration = 0.2
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"

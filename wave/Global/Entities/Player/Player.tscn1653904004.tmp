@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dghxy6o5jnawy"]
+[gd_scene load_steps=30 format=3 uid="uid://dghxy6o5jnawy"]
 
 [ext_resource type="Script" uid="uid://bdp6wl5dpnfc5" path="res://Global/Entities/Player/player.gd" id="1_7fgh7"]
 [ext_resource type="Shader" uid="uid://cre0xoj0afvnk" path="res://Assets/Shaders/pixel_outline.gdshader" id="1_78vxg"]
@@ -158,6 +158,11 @@ shader_parameter/shade_color = Color(1, 1, 1, 0)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l8rai"]
 
+[sub_resource type="Curve" id="Curve_l8rai"]
+_limits = [0.0, 317.7, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(0.0108696, 317.7), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_55od0"]
 
 [sub_resource type="Resource" id="Resource_hih3k"]
@@ -191,6 +196,7 @@ acceleration = 0.0
 spin_speed = 2.0
 modulate_color = Color(0, 0, 0, 0)
 modulate_outline_color = Color(1, 1, 1, 1)
+fade_curve = SubResource("Curve_l8rai")
 fade_start_time = 0.0
 fade_duration = 0.2
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"

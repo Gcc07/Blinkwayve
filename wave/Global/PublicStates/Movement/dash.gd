@@ -42,7 +42,8 @@ func process_physics(delta: float) -> State:
 	var smoothed_x = lerp(move_dir_x, get_movement_input_x(), delta * smoothing_speed)
 	var smoothed_y = lerp(move_dir_y, get_movement_input_y(), delta * smoothing_speed)
 
-	rotate_sprite_towards_direction(smoothed_x, smoothed_y, delta)
+	if get_movement_input_x() != 0 and get_movement_input_y() != 0:
+		rotate_sprite_towards_direction( smoothed_x, smoothed_y, delta)
 
 	parent.velocity.x = smoothed_x * move_speed
 	parent.velocity.y = smoothed_y * move_speed
