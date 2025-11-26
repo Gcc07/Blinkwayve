@@ -64,6 +64,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(1, 1)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../Sprite2D:material:shader_parameter/shade_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2nylj"]
 _data = {
@@ -147,12 +159,13 @@ shader_parameter/alpha_threshold = 0.0
 shader_parameter/outline_samples = 4
 shader_parameter/shade_color = Color(1, 1, 1, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_78vxg"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_m04xd"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_gh4oh"]
 
 [sub_resource type="Curve" id="Curve_m5yg2"]
-_data = [Vector2(0, 0), 0.0, 2.6129, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_limits = [-50.0, 50.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 41.2802, 0, 0, Vector2(1, 8.06452), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Resource" id="Resource_m04xd"]
@@ -164,15 +177,15 @@ is_friendly = false
 damage = 5.0
 stuns = false
 max_pierce = 1
-time_to_live = 1.0
-collision_shape = SubResource("CircleShape2D_78vxg")
-hurtbox_shape = SubResource("CircleShape2D_isqt6")
+time_to_live = 2.0
+collision_shape = SubResource("CircleShape2D_m04xd")
+hurtbox_shape = SubResource("CircleShape2D_gh4oh")
 rotate_collision_shape = 0.0
 rotate_hurtbox_shape = 0.0
 collision_size_corresponds_to_sprite = true
 hurtbox_size_corresponds_to_sprite = true
 breaks_on_collision = false
-sprite_texture = "uid://btayl3y32i2bv"
+sprite_texture = "uid://dm2wc0rmx43lx"
 num_of_frames = 1
 animation_is_continous = false
 has_animation = false
@@ -180,13 +193,13 @@ parent_offset = Vector2(0, 0)
 scale_factor = Vector2(0.1, 0.1)
 scale_growth_rate = 0.0
 scale_curve = SubResource("Curve_m5yg2")
-initial_velocity = Vector2(0, 0)
+initial_velocity = Vector2(100, 100)
 affected_by_gravity = false
-speed = 0.0
+speed = 0.001
 acceleration = 0.0
 spin_speed = 2.0
-modulate_color = Color(0.996078, 0.682353, 0.203922, 1)
-modulate_outline_color = Color(1, 1, 1, 1)
+modulate_color = Color(1, 1, 1, 1)
+modulate_outline_color = Color(0.996078, 0.682353, 0.203922, 1)
 fade_start_time = 1.0
 fade_duration = 1.0
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"
@@ -299,7 +312,9 @@ scale_min = 0.0
 scale_max = 5.0
 scale_curve = SubResource("CurveTexture_55od0")
 
-[node name="Flaimegait" type="CharacterBody2D"]
+[node name="Flamegait" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_m04xd")
 entity_id = "Flamegait"
 
@@ -322,6 +337,8 @@ autoplay = "Sprecho_animations/idle"
 [node name="AttackPoint" type="Node2D" parent="."]
 
 [node name="Hitbox" parent="." instance=ExtResource("3_gh4oh")]
+collision_layer = 2
+collision_mask = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_t23hf")
@@ -354,7 +371,7 @@ script = ExtResource("10_llvbf")
 move_state = NodePath("../move")
 dash_time = 0.5
 move_speed = 400.0
-rotation_speed = 10.0
+rotation_smoothing = 0.0
 animation_name = "dash"
 
 [node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("11_e0hwh")]
@@ -362,7 +379,7 @@ starting_state = NodePath("none")
 
 [node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states")]
 script = ExtResource("12_ufifj")
-action_states = [NodePath("../dash_attack"), NodePath("../primary")]
+action_states = [NodePath("../primary"), NodePath("../dash_attack")]
 action_name = "none"
 
 [node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]

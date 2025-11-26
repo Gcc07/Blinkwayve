@@ -16,7 +16,7 @@ extends CharacterBody2D
 @onready var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var pierces_left : int
 @onready var applied_initial_velocity = false
-@onready var initial_scale : Vector2
+@onready var initial_scale : Vector2 = self.scale
 var elapsed_time : float = 0.0
 var original_shade_color_alpha : float = 1.0
 
@@ -26,19 +26,7 @@ func _ready() -> void:
 	initialize_color_modulation(projectile_resource.modulate_color)
 	initialize_outline_color_modulation(projectile_resource.modulate_outline_color)
 	init_scale(projectile_resource.scale_factor.x, projectile_resource.scale_factor.y)
-	initial_scale = self.scale
 	set_attack_sprite(projectile_resource.sprite_texture)
-	
-	# Initialize sprite modulate to fully visible
-	sprite.modulate = Color(1, 1, 1, 1)
-	
-	# Ensure material is local to scene (not shared resource) so fade works per-instance
-	if sprite.material and sprite.material is ShaderMaterial:
-		if not sprite.material.resource_local_to_scene:
-			sprite.material = sprite.material.duplicate()
-			sprite.material.resource_local_to_scene = true
-		# Initialize shader alpha to 1.0
-		sprite.material.set_shader_parameter("alpha", 1.0)
 	
 	initialize_collision_and_hurtbox_shapes(projectile_resource.collision_shape, projectile_resource.hurtbox_shape)
 	set_collision_size_equals_sprite(projectile_resource.collision_size_corresponds_to_sprite)
@@ -62,6 +50,15 @@ func _process(delta: float) -> void:
 var current_pierce_count := 0
 
 func initialize_color_modulation(color):
+	# Initialize sprite modulate to fully visible
+	sprite.modulate = Color(1, 1, 1, 1)
+	# Ensure material is local to scene (not shared resource) so fade works per-instance
+	if sprite.material and sprite.material is ShaderMaterial:
+		if not sprite.material.resource_local_to_scene:
+			sprite.material = sprite.material.duplicate()
+			sprite.material.resource_local_to_scene = true
+		# Initialize shader alpha to 1.0
+		sprite.material.set_shader_parameter("alpha", 1.0)
 	#if not color == Color(255,255,255,255):
 		#sprite.modulate = color
 	$Sprite2D.material.set_shader_parameter("shade_color", color)
@@ -209,19 +206,15 @@ func _physics_process(delta: float) -> void:
 		var collision = get_slide_collision(i)
 		if collision.get_collider().name == "TileMapLayer":
 			destroy_projectile()
-
-	if !applied_initial_velocity:
-		self.velocity.y = -300
-		applied_initial_velocity = true
 	
 	if projectile_resource.speed > 0 && not self.is_on_floor(): # If the projectile is meant to move, and the projectile is airborne
-		if self.scale.x == float(1): # If the projectile is facing right
+		if self.scale.x > 0: # If the projectile is facing right
 			if projectile_resource.acceleration != 0: # If the projectile acceleration is not equal to zero (if the projectile is meant to accelerate)
 				self.velocity.x = lerp(self.velocity.x, -projectile_resource.speed, delta * projectile_resource.acceleration)
 			else: # If no acceleration, apply static x velocity.
 				self.velocity.x =  projectile_resource.speed * -1
 				#print("applying velocity: ", self.velocity.x)
-		elif self.scale.x == float(-1):
+		elif self.scale.x < 0:
 			if projectile_resource.acceleration != 0:
 				self.velocity.x = lerp(self.velocity.x, projectile_resource.speed, delta * projectile_resource.acceleration)
 			else:
@@ -229,25 +222,13 @@ func _physics_process(delta: float) -> void:
 				self.velocity.x =  projectile_resource.speed * 1
 	else:
 		pass
-		#self.velocity.x = 0
 
 	if projectile_resource.affected_by_gravity:
 		self.velocity.y += gravity * delta
 	if projectile_resource.affected_by_gravity or projectile_resource.speed > 0:
 		move_and_slide()
 		if self.is_on_floor():
-			self.velocity.x = lerp(self.velocity.x, 0.0, 3*delta)
-			
-		#for i in get_slide_collision_count():
-			#var collision = get_slide_collision(i)
-			#print("Collided with: ", collision.get_collider().name)
-			#if collision.get_collider().name == "TileMapLayer":
-				#is_colliding_with_ground = true
-				#
-				# self.velocity.x = lerp(self.velocity.x, 0.0, 1)
-				#destroy_projectile(3)
-			#else: 
-				#is_colliding_with_ground = false
+			self.velocity.x = lerp(self.velocity.x, 0.0, delta)
 
 ## Rotate the projectile
 func do_rotation(delta: float):

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="1_cbn2q"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_78vxg"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_hih3k"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_nbtck"]
 
 [resource]
 resource_local_to_scene = true
@@ -16,8 +16,8 @@ damage = 5.0
 stuns = true
 max_pierce = 1
 time_to_live = 2.0
-collision_shape = SubResource("CircleShape2D_78vxg")
-hurtbox_shape = SubResource("CircleShape2D_isqt6")
+collision_shape = SubResource("CircleShape2D_hih3k")
+hurtbox_shape = SubResource("CircleShape2D_nbtck")
 rotate_collision_shape = 0.0
 rotate_hurtbox_shape = 0.0
 collision_size_corresponds_to_sprite = true

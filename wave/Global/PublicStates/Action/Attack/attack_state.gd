@@ -14,10 +14,9 @@ var projectile : PackedScene = preload("uid://be3mpsirj8rwt")
 
 # Pass the inputs from the action components into the sub-states
 
-func get_action_input_as_string() -> String:
-	return action_component.get_attack_input()
-
 func enter() -> void:
+	if parent.entity_id == "Flamegait":
+		print("flame on!")
 	parent.can_dash = false
 	spawn_corresponding_projectiles()
 	# Overwriting the enter statements in the action state
@@ -42,7 +41,6 @@ func exit() -> void:
 func process_physics(delta: float) -> ActionState:
 	if not parent.alive:
 		return death_state
-	# print(self.name)
 	if parent.stunned:
 		return stunned_state
 	if finished_attack:

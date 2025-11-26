@@ -27,7 +27,7 @@ func process_input(event: InputEvent) -> MovementState:
 	if dash_input:
 		# Check dash availability (for player) or just can_dash (for enemies)
 		var can_use_dash = true
-		if parent.has("num_of_dashes_available"):
+		if "num_of_dashes_available" in parent:
 			can_use_dash = parent.num_of_dashes_available > 0
 		
 		if parent.can_dash and can_use_dash:
@@ -38,14 +38,14 @@ func process_physics(delta: float) -> MovementState:
 	parent.move_and_slide()
 	
 	# Check for dash input from either Input or move_component
-	var dash_input = Input.is_action_just_pressed('dash')
+	var dash_input
 	if move_component.has_method("get_dash"):
-		dash_input = dash_input or (move_component.get_dash() > 0)
+		dash_input = (move_component.get_dash() > 0)
 	
 	if dash_input:
 		# Check dash availability (for player) or just can_dash (for enemies)
 		var can_use_dash = true
-		if parent.has("num_of_dashes_available"):
+		if "num_of_dashes_available" in parent:
 			can_use_dash = parent.num_of_dashes_available > 0
 		
 		if parent.can_dash and can_use_dash:
