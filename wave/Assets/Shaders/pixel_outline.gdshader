@@ -25,19 +25,19 @@ const vec2[8] DIRS = vec2[8]
 
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
-	float alpha = tex.a;
+	float tex_alpha = tex.a;
 
 	 // Skip fully transparent pixel with no outline
-	if (alpha <= 0.0 && outline_size <= 0.0) discard;
+	if (tex_alpha <= 0.0 && outline_size <= 0.0) discard;
 
-	bool solid = alpha > alpha_threshold;
-	bool semi  = (alpha > 0.0) && !solid;
+	bool solid = tex_alpha > alpha_threshold;
+	bool semi  = (tex_alpha > 0.0) && !solid;
 	vec4 out_color = tex;
 
 	// Blend solid pixels toward the shade_color based on its alpha
 	if (solid && shade_color.a > 0.0) {
 		out_color.rgb = mix(tex.rgb, shade_color.rgb, shade_color.a);
-		out_color.a   = alpha;
+		out_color.a   = tex_alpha;
 	}
 
 	bool found = false;
@@ -60,7 +60,13 @@ void fragment() {
 	else            discard;
 	
 	// Apply alpha fade multiplier to final color
+	// Multiply by our fade alpha parameter - this works with sprite.modulate.a
 	COLOR.a *= alpha;
+	
+	// Also ensure we don't render fully transparent pixels
+	if (COLOR.a <= 0.0) {
+		discard;
+	}
 }
 
 //void light() {

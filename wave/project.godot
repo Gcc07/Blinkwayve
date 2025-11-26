@@ -29,7 +29,16 @@ window/stretch/aspect="expand"
 [file_customization]
 
 folder_colors={
-"res://Global/Entities/Player/": "blue"
+"res://Assets/": "purple",
+"res://Global/": "blue",
+"res://Global/Classes/": "green",
+"res://Global/Entities/Enemies/": "red",
+"res://Global/Entities/Enemies/Flamegait/": "orange",
+"res://Global/Entities/Player/": "blue",
+"res://Global/Projectiles/": "green",
+"res://Global/PublicStates/": "green",
+"res://Global/Scenes/": "gray",
+"res://Global/StateMachines/": "green"
 }
 
 [input]

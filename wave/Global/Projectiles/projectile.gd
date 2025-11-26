@@ -18,6 +18,7 @@ extends CharacterBody2D
 @onready var applied_initial_velocity = false
 @onready var initial_scale : Vector2
 var elapsed_time : float = 0.0
+var original_shade_color_alpha : float = 1.0
 
 func _ready() -> void:
 
@@ -26,13 +27,22 @@ func _ready() -> void:
 	initialize_outline_color_modulation(projectile_resource.modulate_outline_color)
 	init_scale(projectile_resource.scale_factor.x, projectile_resource.scale_factor.y)
 	initial_scale = self.scale
-	# Initialize shader alpha to 1.0 (fully visible)
+	set_attack_sprite(projectile_resource.sprite_texture)
+	
+	# Initialize sprite modulate to fully visible
+	sprite.modulate = Color(1, 1, 1, 1)
+	
+	# Ensure material is local to scene (not shared resource) so fade works per-instance
 	if sprite.material and sprite.material is ShaderMaterial:
+		if not sprite.material.resource_local_to_scene:
+			sprite.material = sprite.material.duplicate()
+			sprite.material.resource_local_to_scene = true
+		# Initialize shader alpha to 1.0
 		sprite.material.set_shader_parameter("alpha", 1.0)
+	
 	initialize_collision_and_hurtbox_shapes(projectile_resource.collision_shape, projectile_resource.hurtbox_shape)
 	set_collision_size_equals_sprite(projectile_resource.collision_size_corresponds_to_sprite)
 	set_hurtbox_size_equals_sprite(projectile_resource.hurtbox_size_corresponds_to_sprite)
-	set_attack_sprite(projectile_resource.sprite_texture)
 	
 	
 	initialize_projectile_frames(projectile_resource.num_of_frames)
@@ -56,6 +66,11 @@ func initialize_color_modulation(color):
 		#sprite.modulate = color
 	$Sprite2D.material.set_shader_parameter("shade_color", color)
 	$Sprite2D.material.set_shader_parameter("shade_color", color)
+	# Store original shade_color alpha for fade calculations
+	if sprite.material and sprite.material is ShaderMaterial:
+		var shade_color = sprite.material.get_shader_parameter("shade_color")
+		if shade_color is Color:
+			original_shade_color_alpha = shade_color.a
 
 func initialize_outline_color_modulation(color):
 	$Sprite2D.material.set_shader_parameter("outline_color", color)
@@ -234,6 +249,7 @@ func _physics_process(delta: float) -> void:
 			#else: 
 				#is_colliding_with_ground = false
 
+## Rotate the projectile
 func do_rotation(delta: float):
 	if projectile_resource.spin_speed > 0: 
 		if self.scale.x == float(1) or self.scale.x > 0.0:
@@ -281,11 +297,8 @@ func modify_scale_linearly(growth_rate):
 			self.scale.x += growth_rate/100
 		self.scale.y += growth_rate/100
 	
-## Updates the projectile's alpha/opacity based on fade settings using shader parameter
+## Updates the projectile's alpha/opacity based on fade settings using modulate
 func update_fade() -> void:
-	if not sprite.material or not sprite.material is ShaderMaterial:
-		return
-		
 	var alpha: float = 1.0
 	
 	if projectile_resource.fade_curve != null and projectile_resource.time_to_live > 0:
@@ -294,33 +307,56 @@ func update_fade() -> void:
 		normalized_time = clamp(normalized_time, 0.0, 1.0)
 		alpha = projectile_resource.fade_curve.sample(normalized_time)
 		alpha = clamp(alpha, 0.0, 1.0)
+		# Debug output
+		# print("Fade curve - Normalized time: ", normalized_time, " Alpha: ", alpha)
 	elif projectile_resource.fade_start_time > 0.0 and elapsed_time >= projectile_resource.fade_start_time:
 		# Use simple linear fade
 		var fade_progress = (elapsed_time - projectile_resource.fade_start_time) / projectile_resource.fade_duration
 		fade_progress = clamp(fade_progress, 0.0, 1.0)
 		alpha = 1.0 - fade_progress  # Fade from 1.0 to 0.0
+		# print("Fade linear - Progress: ", fade_progress, " Alpha: ", alpha)
 	
-	# Set shader alpha parameter (use same pattern as other shader calls)
-	# Always set it, even if alpha is 1.0, to ensure it's initialized
-	if $Sprite2D.material:
-		$Sprite2D.material.set_shader_parameter("alpha", alpha)
+	# Set sprite modulate to fade (fully transparent when alpha is 0)
+	# Create new color to ensure the change takes effect
+	var new_modulate = Color(1, 1, 1, alpha)  # Use white with alpha to preserve shader colors
+	sprite.modulate = new_modulate
 	
+	# Set shader parameters for fade
+	if sprite.material and sprite.material is ShaderMaterial:
+		# Set shader alpha parameter (the one we added to the shader)
+		# This is the main fade control - it multiplies the final COLOR.a
+		sprite.material.set_shader_parameter("alpha", alpha)
+		
+		# Set shader shade_color alpha to fade gradually (matches fade alpha)
+		var current_shade_color = sprite.material.get_shader_parameter("shade_color")
+		if current_shade_color is Color:
+			var new_shade_color = current_shade_color
+			# Fade the shader shade_color alpha gradually to match the fade
+			# Use original alpha multiplied by fade alpha to preserve the original blend strength
+			new_shade_color.a = original_shade_color_alpha * alpha
+			sprite.material.set_shader_parameter("shade_color", new_shade_color)
+
+## Initializes excess data for the projectile
 func initialize_data():
 	pierces_left = projectile_resource.max_pierce
 
+## When the projectile dies, get rid of it
 func _on_timer_timeout() -> void:
 	queue_free()
-
+	
+## Create ttl timer
 func start_timer() -> void:
 	timer.wait_time = projectile_resource.time_to_live
 	timer.start()
 
+## On target hit, implement functionality
 func on_target_hit() -> void:
 	if pierces_left != 1:
 		pierces_left -= 1
 	elif pierces_left == 1:
 		destroy_projectile(0)
 
+## On projectile destruction 
 func destroy_projectile(delay: float = 0):
 	if delay == 0:
 		queue_free()
@@ -330,5 +366,6 @@ func destroy_projectile(delay: float = 0):
 		destroy_timer.start(delay)
 		destroy_timer.timeout.connect(_destroy_timer_timout)
 
+## On projectile destruction
 func _destroy_timer_timout():
 	queue_free()

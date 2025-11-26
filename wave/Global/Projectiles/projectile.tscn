@@ -53,6 +53,8 @@ uniform float alpha_threshold : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform int outline_samples   : hint_range(4, 8) = 4;
 // Color to blend with solid pixels (alpha is blend strength)
 uniform vec4 shade_color      : source_color = vec4(1.0, 1.0, 1.0, .5);
+// Overall alpha/opacity multiplier for fade effects
+uniform float alpha           : hint_range(0.0, 1.0) = 1.0;
 
 // === Outline Sampling Directions ===
 
@@ -64,19 +66,19 @@ const vec2[8] DIRS = vec2[8]
 
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
-	float alpha = tex.a;
+	float tex_alpha = tex.a;
 
 	 // Skip fully transparent pixel with no outline
-	if (alpha <= 0.0 && outline_size <= 0.0) discard;
+	if (tex_alpha <= 0.0 && outline_size <= 0.0) discard;
 
-	bool solid = alpha > alpha_threshold;
-	bool semi  = (alpha > 0.0) && !solid;
+	bool solid = tex_alpha > alpha_threshold;
+	bool semi  = (tex_alpha > 0.0) && !solid;
 	vec4 out_color = tex;
 
 	// Blend solid pixels toward the shade_color based on its alpha
 	if (solid && shade_color.a > 0.0) {
 		out_color.rgb = mix(tex.rgb, shade_color.rgb, shade_color.a);
-		out_color.a   = alpha;
+		out_color.a   = tex_alpha;
 	}
 
 	bool found = false;
@@ -97,6 +99,15 @@ void fragment() {
 	else if (found) COLOR = outline_color;
 	else if (semi)  COLOR = tex;
 	else            discard;
+	
+	// Apply alpha fade multiplier to final color
+	// Multiply by our fade alpha parameter - this works with sprite.modulate.a
+	COLOR.a *= alpha;
+	
+	// Also ensure we don't render fully transparent pixels
+	if (COLOR.a <= 0.0) {
+		discard;
+	}
 }
 
 //void light() {
@@ -113,6 +124,7 @@ shader_parameter/outline_size = 1.0
 shader_parameter/alpha_threshold = 0.0
 shader_parameter/outline_samples = 4
 shader_parameter/shade_color = Color(1, 1, 1, 0.5)
+shader_parameter/alpha = 1.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_y6bbh"]
 

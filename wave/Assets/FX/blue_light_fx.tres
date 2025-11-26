@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="ProjectileResource" load_steps=3 format=3 uid="uid://cmx6kkhsaij8f"]
+
+[ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="1_mg0sb"]
+
+[sub_resource type="Curve" id="Curve_gc78r"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.225806), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[resource]
+script = ExtResource("1_mg0sb")
+ID = "blue_light_fx"
+stick_to_parent = true
+is_friendly = false
+damage = 0.0
+stuns = false
+max_pierce = 1
+time_to_live = 1.0
+rotate_collision_shape = 0.0
+rotate_hurtbox_shape = 0.0
+collision_size_corresponds_to_sprite = false
+hurtbox_size_corresponds_to_sprite = false
+breaks_on_collision = false
+sprite_texture = "uid://ep5t785a1wky"
+num_of_frames = 1
+animation_is_continous = false
+has_animation = false
+parent_offset = Vector2(0, 0)
+scale_factor = Vector2(0.03, 0.03)
+scale_growth_rate = 0.0
+scale_curve = SubResource("Curve_gc78r")
+initial_velocity = Vector2(0, 0)
+affected_by_gravity = false
+speed = 0.0
+acceleration = 0.0
+spin_speed = 4.0
+modulate_color = Color(0, 0, 0, 0)
+modulate_outline_color = Color(0.105882, 0.121569, 0.129412, 0)
+fade_start_time = 0.0
+fade_duration = 0.0
+metadata/_custom_type_script = "uid://ch13tt26l8qwb"

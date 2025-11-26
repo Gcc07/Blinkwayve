@@ -51,6 +51,7 @@ func process_physics(delta: float) -> MovementState:
 		return idle_state
 	if parent.can_move == false:
 		return idle_state
-	if Input.is_action_just_pressed('dash'):
+	# Check for dash input from either Input or move_component
+	if (move_component.has_method("get_dash") and move_component.get_dash() > 0):
 		return dash_state
 	return null

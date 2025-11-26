@@ -7,9 +7,10 @@ extends MovementState
 
 var move_dir_x := 0.0
 var move_dir_y := 0.0
-var smoothing_speed := 1.0 # Higher = snappier, lower = smoother
+var smoothing_speed := 10.0 # Higher = snappier, lower = smoother
 
 func enter() -> void:
+	
 	super()
 	moveAnimations.play("RESET")
 	#parent.can_attack = false

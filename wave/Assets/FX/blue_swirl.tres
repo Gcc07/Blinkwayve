@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c15rgl5vuyoix"]
+
+[ext_resource type="Shader" uid="uid://c6mo4ehq4c4lu" path="res://Assets/Shaders/background_noise.gdshader" id="1_iptwj"]
+
+[resource]
+shader = ExtResource("1_iptwj")
+shader_parameter/speed = 0.2
+shader_parameter/pixelation = 1.0
+shader_parameter/zoom = 10.0
+shader_parameter/gradient_pixelation = 0.2
+shader_parameter/background_threshold = 0.0
+shader_parameter/color_low_threshold = 0.242
+shader_parameter/color_mid_threshold = 1.0
+shader_parameter/color_low = Color(0.0941176, 0.0784314, 0.145098, 1)
+shader_parameter/color_mid = Color(0, 0.285009, 0.546074, 1)
+shader_parameter/color_high = Color(0.276858, 0.988506, 1, 1)

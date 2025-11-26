@@ -1,32 +1,22 @@
-[gd_scene load_steps=41 format=3 uid="uid://dghxy6o5jnawy"]
+[gd_scene load_steps=39 format=3 uid="uid://c167mxfdcy2uo"]
 
-[ext_resource type="Script" uid="uid://bdp6wl5dpnfc5" path="res://Global/Entities/Player/player.gd" id="1_7fgh7"]
-[ext_resource type="Shader" uid="uid://cre0xoj0afvnk" path="res://Assets/Shaders/pixel_outline.gdshader" id="1_78vxg"]
-[ext_resource type="PackedScene" uid="uid://jmnf0fy8c8di" path="res://Global/Classes/hitbox.tscn" id="2_qe8n5"]
-[ext_resource type="Texture2D" uid="uid://by8lffjicck6f" path="res://Assets/Spright.png" id="2_usju2"]
-[ext_resource type="PackedScene" uid="uid://c2njkfc01sgji" path="res://Global/StateMachines/move_state_machine.tscn" id="3_usju2"]
-[ext_resource type="AnimationLibrary" uid="uid://bhswa3utj4vpb" path="res://Global/Entities/Player/Sprecho_Move.res" id="3_ygpja"]
-[ext_resource type="AnimationLibrary" uid="uid://ft72v8srxujd" path="res://Global/Entities/Player/Sprecho_Action_Animations.res" id="4_2nylj"]
-[ext_resource type="Script" uid="uid://bybtb1c113b3d" path="res://Global/PublicStates/Movement/idle.gd" id="4_v7ewn"]
-[ext_resource type="Script" uid="uid://2wc1hd1lcfeq" path="res://Global/Entities/Player/player_attack_component.gd" id="5_j2bwr"]
-[ext_resource type="Script" uid="uid://b5fv7ncb7fxtg" path="res://Global/PublicStates/Movement/dash.gd" id="5_yhqop"]
-[ext_resource type="Script" uid="uid://vdwjy5ar2b6m" path="res://Global/PublicStates/Movement/move.gd" id="6_wf84g"]
-[ext_resource type="Script" uid="uid://bhrw02juhlg76" path="res://Global/Entities/Player/player_move_component.gd" id="7_55fbt"]
-[ext_resource type="PackedScene" uid="uid://07qnueve2in3" path="res://Global/StateMachines/action_state_machine.tscn" id="8_yhqop"]
-[ext_resource type="Script" uid="uid://swrkuwy8kc7r" path="res://Global/PublicStates/Action/none_action_state.gd" id="9_55fbt"]
-[ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="10_ncjne"]
-[ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="13_2yk6h"]
-[ext_resource type="Texture2D" uid="uid://d2tjr0rsfvuhh" path="res://Assets/dash_orb.png" id="17_2nylj"]
-[ext_resource type="Resource" uid="uid://cmx6kkhsaij8f" path="res://Assets/FX/blue_light_fx.tres" id="19_hih3k"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_isqt6"]
-shader = ExtResource("1_78vxg")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_size = 1.0
-shader_parameter/alpha_threshold = 0.0
-shader_parameter/outline_samples = 4
-shader_parameter/shade_color = Color(1, 1, 1, 0.5)
-shader_parameter/alpha = 1.0
+[ext_resource type="Script" uid="uid://hgyak82datyo" path="res://Global/Entities/Enemies/Flamegait/flaimegait.gd" id="1_m04xd"]
+[ext_resource type="AnimationLibrary" uid="uid://snt6pwb8fvc0" path="res://Global/Entities/Enemies/Flamegait/Flamegait_Move_Animations.res" id="1_m5yg2"]
+[ext_resource type="AnimationLibrary" uid="uid://5juty5r8ujw8" path="res://Global/Entities/Enemies/Flamegait/Flamegait_Action_Animations.res" id="2_m04xd"]
+[ext_resource type="PackedScene" uid="uid://jmnf0fy8c8di" path="res://Global/Classes/hitbox.tscn" id="3_gh4oh"]
+[ext_resource type="Texture2D" uid="uid://covjl8cwcsvcv" path="res://Assets/flamegait.png" id="4_8cuej"]
+[ext_resource type="Script" uid="uid://dasb615afpdjj" path="res://Global/Entities/Enemies/enemy_move_component.gd" id="5_jaeww"]
+[ext_resource type="Script" uid="uid://75eqtwpkuann" path="res://Global/Entities/Enemies/enemy_attack_component.gd" id="6_pjbwg"]
+[ext_resource type="PackedScene" uid="uid://c2njkfc01sgji" path="res://Global/StateMachines/move_state_machine.tscn" id="7_23anw"]
+[ext_resource type="Script" uid="uid://bybtb1c113b3d" path="res://Global/PublicStates/Movement/idle.gd" id="8_jc1k6"]
+[ext_resource type="Script" uid="uid://vdwjy5ar2b6m" path="res://Global/PublicStates/Movement/move.gd" id="9_3iahb"]
+[ext_resource type="Script" uid="uid://b5fv7ncb7fxtg" path="res://Global/PublicStates/Movement/dash.gd" id="10_llvbf"]
+[ext_resource type="PackedScene" uid="uid://07qnueve2in3" path="res://Global/StateMachines/action_state_machine.tscn" id="11_e0hwh"]
+[ext_resource type="Script" uid="uid://swrkuwy8kc7r" path="res://Global/PublicStates/Action/none_action_state.gd" id="12_ufifj"]
+[ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="13_0jkp5"]
+[ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="14_eok5o"]
+[ext_resource type="Resource" uid="uid://cmx6kkhsaij8f" path="res://Assets/FX/blue_light_fx.tres" id="15_1k6s2"]
+[ext_resource type="Texture2D" uid="uid://pi3ng4xetd6k" path="res://Assets/flamegait_dash_orb.png" id="17_m04xd"]
 
 [sub_resource type="Animation" id="Animation_2nylj"]
 length = 0.001
@@ -80,7 +70,7 @@ _data = {
 &"RESET": SubResource("Animation_ygpja")
 }
 
-[sub_resource type="Shader" id="Shader_l8rai"]
+[sub_resource type="Shader" id="Shader_78vxg"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -148,9 +138,9 @@ void fragment() {
 //}
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygpja"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t23hf"]
 resource_local_to_scene = true
-shader = SubResource("Shader_l8rai")
+shader = SubResource("Shader_78vxg")
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 shader_parameter/outline_size = 1.0
 shader_parameter/alpha_threshold = 0.0
@@ -161,16 +151,20 @@ shader_parameter/shade_color = Color(1, 1, 1, 0)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
 
-[sub_resource type="Resource" id="Resource_l8rai"]
+[sub_resource type="Curve" id="Curve_m5yg2"]
+_data = [Vector2(0, 0), 0.0, 2.6129, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_m04xd"]
 resource_local_to_scene = true
-script = ExtResource("13_2yk6h")
-ID = "Rasengan"
+script = ExtResource("14_eok5o")
+ID = "Flamewave"
 stick_to_parent = false
-is_friendly = true
+is_friendly = false
 damage = 5.0
-stuns = true
+stuns = false
 max_pierce = 1
-time_to_live = 2.0
+time_to_live = 1.0
 collision_shape = SubResource("CircleShape2D_78vxg")
 hurtbox_shape = SubResource("CircleShape2D_isqt6")
 rotate_collision_shape = 0.0
@@ -178,19 +172,20 @@ rotate_hurtbox_shape = 0.0
 collision_size_corresponds_to_sprite = true
 hurtbox_size_corresponds_to_sprite = true
 breaks_on_collision = false
-sprite_texture = "uid://b0qi6rj2rhng2"
+sprite_texture = "uid://btayl3y32i2bv"
 num_of_frames = 1
 animation_is_continous = false
 has_animation = false
 parent_offset = Vector2(0, 0)
 scale_factor = Vector2(0.1, 0.1)
-scale_growth_rate = 1.5
+scale_growth_rate = 0.0
+scale_curve = SubResource("Curve_m5yg2")
 initial_velocity = Vector2(0, 0)
 affected_by_gravity = false
 speed = 0.0
 acceleration = 0.0
 spin_speed = 2.0
-modulate_color = Color(1, 1, 1, 1)
+modulate_color = Color(0.996078, 0.682353, 0.203922, 1)
 modulate_outline_color = Color(1, 1, 1, 1)
 fade_start_time = 1.0
 fade_duration = 1.0
@@ -205,9 +200,9 @@ _limits = [-50.0, 50.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 106.678, 0, 0, Vector2(0.241379, 8.06452), 1.73238, 1.73238, 0, 0, Vector2(1, 1.61291), -3.957, -3.957, 0, 0]
 point_count = 3
 
-[sub_resource type="Resource" id="Resource_55od0"]
+[sub_resource type="Resource" id="Resource_gh4oh"]
 resource_local_to_scene = true
-script = ExtResource("13_2yk6h")
+script = ExtResource("14_eok5o")
 ID = "Rasengan"
 stick_to_parent = false
 is_friendly = true
@@ -250,9 +245,9 @@ _limits = [-50.0, 50.0, 0.0, 2.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.152174, 3.76344), 0.0, 0.0, 0, 0, Vector2(0.826087, -5.91398), -3.957, -3.957, 0, 0]
 point_count = 3
 
-[sub_resource type="Resource" id="Resource_hih3k"]
+[sub_resource type="Resource" id="Resource_8cuej"]
 resource_local_to_scene = true
-script = ExtResource("13_2yk6h")
+script = ExtResource("14_eok5o")
 ID = "Rasengan"
 stick_to_parent = false
 is_friendly = true
@@ -286,15 +281,15 @@ fade_start_time = 0.0
 fade_duration = 0.0
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
-[sub_resource type="Curve" id="Curve_l8rai"]
+[sub_resource type="Curve" id="Curve_4dxnp"]
 _limits = [0.0, 5.0, 0.0, 1.0]
 _data = [Vector2(0, 0.215054), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_55od0"]
-curve = SubResource("Curve_l8rai")
+curve = SubResource("Curve_4dxnp")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_trail"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uuy3o"]
 lifetime_randomness = 0.18
 particle_flag_disable_z = true
 inherit_velocity_ratio = 0.1
@@ -304,19 +299,15 @@ scale_min = 0.0
 scale_max = 5.0
 scale_curve = SubResource("CurveTexture_55od0")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_55od0"]
-radius = 7.0
-
-[node name="Sprecho" type="CharacterBody2D"]
-material = SubResource("ShaderMaterial_isqt6")
-script = ExtResource("1_7fgh7")
-entity_id = "Sprecho"
+[node name="Flaimegait" type="CharacterBody2D"]
+script = ExtResource("1_m04xd")
+entity_id = "Flamegait"
 
 [node name="MoveAnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MoveStateMachine/dash")
 libraries = {
 &"": SubResource("AnimationLibrary_l8rai"),
-&"Sprecho_Move_Animations": ExtResource("3_ygpja")
+&"Flamegait_Move_Animations": ExtResource("1_m5yg2")
 }
 autoplay = "RESET"
 
@@ -324,84 +315,75 @@ autoplay = "RESET"
 root_node = NodePath("../MoveStateMachine/dash")
 libraries = {
 &"": SubResource("AnimationLibrary_2nylj"),
-&"Sprecho_Action_Animations": ExtResource("4_2nylj")
+&"Flamegait_Action_Animations": ExtResource("2_m04xd")
 }
 autoplay = "Sprecho_animations/idle"
 
 [node name="AttackPoint" type="Node2D" parent="."]
 
-[node name="Hitbox" parent="." instance=ExtResource("2_qe8n5")]
+[node name="Hitbox" parent="." instance=ExtResource("3_gh4oh")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_ygpja")
-texture = ExtResource("2_usju2")
+material = SubResource("ShaderMaterial_t23hf")
+texture = ExtResource("4_8cuej")
 
-[node name="PlayerMoveComponent" type="Node" parent="."]
-script = ExtResource("7_55fbt")
+[node name="EnemyMoveComponent" type="Node" parent="."]
+script = ExtResource("5_jaeww")
 
-[node name="PlayerActionComponent" type="Node" parent="."]
-script = ExtResource("5_j2bwr")
+[node name="EnemyActionComponent" type="Node" parent="."]
+script = ExtResource("6_pjbwg")
 
-[node name="MoveStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("3_usju2")]
+[node name="MoveStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("7_23anw")]
 starting_state = NodePath("idle")
 
 [node name="idle" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("dash_state", "move_state")]
-script = ExtResource("4_v7ewn")
+script = ExtResource("8_jc1k6")
 dash_state = NodePath("../dash")
 move_state = NodePath("../move")
 animation_name = "idle"
 
 [node name="move" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("idle_state", "dash_state")]
-script = ExtResource("6_wf84g")
+script = ExtResource("9_3iahb")
 idle_state = NodePath("../idle")
 dash_state = NodePath("../dash")
+move_speed = 50.0
 animation_name = "move"
 
 [node name="dash" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("move_state")]
-script = ExtResource("5_yhqop")
+script = ExtResource("10_llvbf")
 move_state = NodePath("../move")
 move_speed = 500.0
 animation_name = "dash"
 
-[node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("8_yhqop")]
+[node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("11_e0hwh")]
 starting_state = NodePath("none")
 
 [node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states")]
-script = ExtResource("9_55fbt")
+script = ExtResource("12_ufifj")
 action_states = [NodePath("../dash_attack"), NodePath("../primary")]
 action_name = "none"
 
 [node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
-script = ExtResource("10_ncjne")
+script = ExtResource("13_0jkp5")
 allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resources = Array[ExtResource("13_2yk6h")]([SubResource("Resource_l8rai")])
+attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_m04xd")])
 action_name = "normal_attack"
 animation_name = "primary_attack"
 
 [node name="dash_attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
-script = ExtResource("10_ncjne")
+script = ExtResource("13_0jkp5")
 allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resources = Array[ExtResource("13_2yk6h")]([SubResource("Resource_55od0"), SubResource("Resource_hih3k"), ExtResource("19_hih3k")])
+attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_gh4oh"), SubResource("Resource_8cuej"), ExtResource("15_1k6s2")])
 action_name = "dash_attack"
-
-[node name="Dashes" type="Sprite2D" parent="."]
-texture_repeat = 2
-position = Vector2(0, 16)
-texture = ExtResource("17_2nylj")
-region_enabled = true
-region_rect = Rect2(0, 0, 6, 6)
 
 [node name="TrailParticles" type="GPUParticles2D" parent="."]
 z_index = -1
 emitting = false
 amount = 30
-texture = ExtResource("17_2nylj")
+texture = ExtResource("17_m04xd")
 lifetime = 0.5
 fixed_fps = 60
 trail_enabled = true
-process_material = SubResource("ParticleProcessMaterial_trail")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_55od0")
+process_material = SubResource("ParticleProcessMaterial_uuy3o")

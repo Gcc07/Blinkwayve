@@ -25,6 +25,8 @@ var player_action_component = $PlayerActionComponent
 var num_of_dashes_available : int = 2
 @onready
 var hitbox = $Hitbox
+@onready
+var trail_particles: GPUParticles2D = $TrailParticles
 
 
 func _ready() -> void:
@@ -49,6 +51,8 @@ func _physics_process(delta: float) -> void:
 	movement_state_machine.process_physics(delta)
 	if action_state_machine != null:
 		action_state_machine.process_physics(delta)
+	
+	update_trail_emission()
 	#const_wobble()
 
 
@@ -72,6 +76,26 @@ func _on_damaged(attack: Attack) -> void:
 
 func on_health_changed(health: float) -> void:
 	pass # Replace with function body.
+
+func update_trail_emission() -> void:
+	if not trail_particles:
+		return
+	
+	if not movement_state_machine:
+		return
+	
+	var current_state = movement_state_machine.current_state
+	var should_emit = false
+	
+	if current_state != null:
+		if current_state is DashState:
+			should_emit = true
+	else:
+		# Fallback: check velocity if state is not available
+		if velocity.length() > 10.0:
+			should_emit = true
+	
+	trail_particles.emitting = should_emit
 
 #func const_wobble():
 	#if self.velocity.x <= 80 and self.velocity.x >= -80:

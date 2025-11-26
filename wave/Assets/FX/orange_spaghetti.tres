@@ -1,0 +1,22 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://bsoyluypgx3nr"]
+
+[sub_resource type="Curve" id="Curve_eo5vs"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 3), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5ikvv"]
+curve = SubResource("Curve_eo5vs")
+
+[resource]
+particle_flag_disable_z = true
+angle_min = -720.0
+angle_max = 720.0
+inherit_velocity_ratio = -0.2
+direction = Vector3(0, 0, 0)
+spread = 75.337
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_over_velocity_curve = SubResource("CurveTexture_5ikvv")
+hue_variation_min = -0.15
+hue_variation_max = 0.1
