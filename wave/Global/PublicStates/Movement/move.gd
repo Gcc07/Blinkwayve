@@ -43,7 +43,9 @@ func process_physics(delta: float) -> MovementState:
 	#sprite.flip_h = get_movement_input_x() > 0
 	parent.velocity.x = move_dir_x * current_speed
 	parent.velocity.y = move_dir_y * current_speed
-	parent.move_and_slide()
+	
+	if parent.can_move:
+		parent.move_and_slide()
 	
 	if move_dir_x == 0 and move_dir_y == 0 :
 		return idle_state

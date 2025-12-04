@@ -71,9 +71,6 @@ signal damaged(attack: Attack)
 func on_damaged(attack: Attack) -> void:
 	damaged.emit(attack)
 
-func _on_damaged(attack: Attack) -> void:
-	pass # Replace with function body.
-
 func on_health_changed(health: float) -> void:
 	pass # Replace with function body.
 

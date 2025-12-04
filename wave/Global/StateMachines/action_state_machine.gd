@@ -27,12 +27,15 @@ func change_state(new_state: ActionState) -> void:
 		current_state.exit()
 
 	current_state = new_state
+	if get_parent().entity_id == "Flamegait":
+		print(current_state)
 	current_state.enter()
 	
 # Pass through functions for the Entity to call,
 # handling state changes as needed.
 
 func process_physics(delta: float) -> void:
+
 	#print(current_state)
 
 	var new_state = current_state.process_physics(delta)

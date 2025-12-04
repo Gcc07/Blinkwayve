@@ -11,11 +11,12 @@ extends ActionState
 func enter() -> void:
 	super()
 	stun_timer.start()
-	parent.can_move = true
+	parent.can_move = false
 	parent.can_be_damaged = false
 	actionAnimations.active = true
 	moveAnimations.active = false
-	sprite.material.set_shader_parameter("shade_color", Color(1.0, 1.0, 1.0))
+	if animation_name == "":
+		sprite.material.set_shader_parameter("shade_color", Color(1.0, 1.0, 1.0))
 
 func _ready(): 
 	stun_timer.wait_time = stun_time
@@ -27,8 +28,11 @@ func _on_timer_timeout():
 	parent.stunned = false
 
 func process_physics(delta: float) -> ActionState:
+	if not parent.alive:
+		return death_state
 	if not parent.stunned:
-		sprite.material.set_shader_parameter("shade_color", Color(1.0, 1.0, 1.0, 0.0))
+		if animation_name == "":
+			sprite.material.set_shader_parameter("shade_color", Color(1.0, 1.0, 1.0, 0.0))
 		parent.can_be_damaged = true
 		return none_state
 	else: 

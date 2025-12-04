@@ -35,7 +35,10 @@ func process_input(event: InputEvent) -> MovementState:
 	return null
 
 func process_physics(delta: float) -> MovementState:
-	parent.move_and_slide()
+	parent.velocity.x = 0
+	parent.velocity.y = 0
+	if parent.alive and parent.can_move:
+		parent.move_and_slide()
 	
 	# Check for dash input from either Input or move_component
 	var dash_input

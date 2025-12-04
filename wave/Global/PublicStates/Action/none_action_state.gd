@@ -12,12 +12,13 @@ func enter() -> void:
 	parent.can_dash = true
 	parent.can_attack = true
 	parent.can_move = true
+	parent.can_be_damaged = true
 	if actionAnimations != null:
 		actionAnimations.active = false
 	if moveAnimations != null: 
 		moveAnimations.active = true
 
-func _on_hitbox_damaged(attack: Attack):
+func damaged(attack: Attack):
 	if attack.stuns == true:
 		parent.stunned = true
 
@@ -29,7 +30,7 @@ func process_physics(delta: float) -> ActionState:
 		# print(get_action_input_as_string())
 		# print(get_action_input_as_string(), " ", action.action_name)
 		
-		if get_action_input_as_string() == action.action_name:
+		if get_action_input_as_string() == action.action_name and parent.alive and parent.can_attack:
 			# print("returned string: ", get_action_input_as_string(), "action name: ", action.action_name)
 			return action
 

@@ -12,8 +12,9 @@ var action_name : String
 var action_component
 
 func enter() -> void:
-	# parent.hitbox.damaged.connect(_on_hitbox_damaged)
-	actionAnimations.play(str(parent.entity_id)+"Action/" + animation_name)
+	if actionAnimations != null and animation_name != "":
+		actionAnimations.active = true
+		actionAnimations.play(str(parent.entity_id)+"_Action_Animations/" + animation_name)
 
 func _on_hitbox_damaged(attack: Attack):
 	if attack.stuns == true:

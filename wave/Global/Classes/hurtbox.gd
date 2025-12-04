@@ -13,9 +13,15 @@ func _ready() -> void:
 
 func on_area_entered(area: Area2D):
 	if area is Hitbox:
+		var hitbox : Hitbox = area as Hitbox
+		# Check if this is a ring hitbox and if we're within the ring
+		if hitbox.is_ring:
+			if not hitbox.is_position_in_ring(global_position):
+				return  # Not within the ring, don't trigger
+		
 		var attack := Attack.new()
 		attack.damage = projectile.projectile_resource.damage
 		attack.stuns = projectile.projectile_resource.stuns
 		area.damage(attack)
-		print("Projectile has hit the target:" + area.get_parent().name)
+		# print("Projectile has hit the target:" + area.get_parent().name)
 		hit_target.emit()

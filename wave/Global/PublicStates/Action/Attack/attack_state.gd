@@ -2,6 +2,7 @@ class_name AttackState
 extends ActionState
 
 @export var allow_movement : bool = false
+@export var immediate_projectiles : bool = true
 @export var none_state : ActionState
 @export var attack_projectile_resources : Array[ProjectileResource]
 
@@ -15,15 +16,14 @@ var projectile : PackedScene = preload("uid://be3mpsirj8rwt")
 # Pass the inputs from the action components into the sub-states
 
 func enter() -> void:
-	if parent.entity_id == "Flamegait":
-		print("flame on!")
+	parent.can_move = allow_movement
 	parent.can_dash = false
-	spawn_corresponding_projectiles()
+	if immediate_projectiles:
+		spawn_corresponding_projectiles()
 	# Overwriting the enter statements in the action state
 	if not parent.hitbox.is_connected("damaged", _on_hitbox_damaged): # If the hitbox isn't connected,
 		parent.hitbox.damaged.connect(_on_hitbox_damaged) # Connect it.
 
-	parent.can_move = allow_movement
 	finished_attack = false
 	if moveAnimations != null and animation_name != "":
 		moveAnimations.active = false

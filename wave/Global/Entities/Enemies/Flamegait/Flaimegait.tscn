@@ -1,11 +1,13 @@
-[gd_scene load_steps=39 format=3 uid="uid://c167mxfdcy2uo"]
+[gd_scene load_steps=45 format=3 uid="uid://c167mxfdcy2uo"]
 
 [ext_resource type="Script" uid="uid://hgyak82datyo" path="res://Global/Entities/Enemies/Flamegait/flaimegait.gd" id="1_m04xd"]
 [ext_resource type="AnimationLibrary" uid="uid://snt6pwb8fvc0" path="res://Global/Entities/Enemies/Flamegait/Flamegait_Move_Animations.res" id="1_m5yg2"]
 [ext_resource type="AnimationLibrary" uid="uid://5juty5r8ujw8" path="res://Global/Entities/Enemies/Flamegait/Flamegait_Action_Animations.res" id="2_m04xd"]
 [ext_resource type="PackedScene" uid="uid://jmnf0fy8c8di" path="res://Global/Classes/hitbox.tscn" id="3_gh4oh"]
 [ext_resource type="Texture2D" uid="uid://covjl8cwcsvcv" path="res://Assets/flamegait.png" id="4_8cuej"]
+[ext_resource type="Script" uid="uid://buabfex5xpfks" path="res://Global/Classes/health.gd" id="5_8cuej"]
 [ext_resource type="Script" uid="uid://dasb615afpdjj" path="res://Global/Entities/Enemies/enemy_move_component.gd" id="5_jaeww"]
+[ext_resource type="Script" uid="uid://prvcqjji1imw" path="res://Global/Entities/Player/health_bar.gd" id="6_23anw"]
 [ext_resource type="Script" uid="uid://75eqtwpkuann" path="res://Global/Entities/Enemies/enemy_attack_component.gd" id="6_pjbwg"]
 [ext_resource type="PackedScene" uid="uid://c2njkfc01sgji" path="res://Global/StateMachines/move_state_machine.tscn" id="7_23anw"]
 [ext_resource type="Script" uid="uid://bybtb1c113b3d" path="res://Global/PublicStates/Movement/idle.gd" id="8_jc1k6"]
@@ -16,7 +18,9 @@
 [ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="13_0jkp5"]
 [ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="14_eok5o"]
 [ext_resource type="Resource" uid="uid://cmx6kkhsaij8f" path="res://Assets/FX/blue_light_fx.tres" id="15_1k6s2"]
+[ext_resource type="Script" uid="uid://y4rs71ay7bna" path="res://Global/PublicStates/Action/death_action_state.gd" id="17_gh4oh"]
 [ext_resource type="Texture2D" uid="uid://pi3ng4xetd6k" path="res://Assets/flamegait_dash_orb.png" id="17_m04xd"]
+[ext_resource type="Script" uid="uid://dyapo17frowtf" path="res://Global/PublicStates/Action/stunned_action_state.gd" id="19_jaeww"]
 
 [sub_resource type="Animation" id="Animation_2nylj"]
 length = 0.001
@@ -75,6 +79,30 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../Sprite2D:material:shader_parameter/outline_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.998147, 0.951388, 0.679272, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../Sprite2D:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2nylj"]
@@ -153,7 +181,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t23hf"]
 resource_local_to_scene = true
 shader = SubResource("Shader_78vxg")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_color = Color(0.998147, 0.951388, 0.679272, 1)
 shader_parameter/outline_size = 1.0
 shader_parameter/alpha_threshold = 0.0
 shader_parameter/outline_samples = 4
@@ -168,7 +196,7 @@ _limits = [-50.0, 50.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 41.2802, 0, 0, Vector2(1, 8.06452), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Resource" id="Resource_m04xd"]
+[sub_resource type="Resource" id="Resource_pjbwg"]
 resource_local_to_scene = true
 script = ExtResource("14_eok5o")
 ID = "Flamewave"
@@ -177,7 +205,7 @@ is_friendly = false
 damage = 5.0
 stuns = false
 max_pierce = 1
-time_to_live = 2.0
+time_to_live = 5.0
 collision_shape = SubResource("CircleShape2D_m04xd")
 hurtbox_shape = SubResource("CircleShape2D_gh4oh")
 rotate_collision_shape = 0.0
@@ -198,9 +226,9 @@ affected_by_gravity = false
 speed = 0.001
 acceleration = 0.0
 spin_speed = 2.0
-modulate_color = Color(1, 1, 1, 1)
+modulate_color = Color(1, 0.956863, 0.698039, 1)
 modulate_outline_color = Color(0.996078, 0.682353, 0.203922, 1)
-fade_start_time = 1.0
+fade_start_time = 4.0
 fade_duration = 1.0
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
@@ -213,7 +241,7 @@ _limits = [-50.0, 50.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 106.678, 0, 0, Vector2(0.241379, 8.06452), 1.73238, 1.73238, 0, 0, Vector2(1, 1.61291), -3.957, -3.957, 0, 0]
 point_count = 3
 
-[sub_resource type="Resource" id="Resource_gh4oh"]
+[sub_resource type="Resource" id="Resource_23anw"]
 resource_local_to_scene = true
 script = ExtResource("14_eok5o")
 ID = "Rasengan"
@@ -258,7 +286,7 @@ _limits = [-50.0, 50.0, 0.0, 2.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.152174, 3.76344), 0.0, 0.0, 0, 0, Vector2(0.826087, -5.91398), -3.957, -3.957, 0, 0]
 point_count = 3
 
-[sub_resource type="Resource" id="Resource_8cuej"]
+[sub_resource type="Resource" id="Resource_jc1k6"]
 resource_local_to_scene = true
 script = ExtResource("14_eok5o")
 ID = "Rasengan"
@@ -294,6 +322,44 @@ fade_start_time = 0.0
 fade_duration = 0.0
 metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
+[sub_resource type="Curve" id="Curve_jaeww"]
+_limits = [0.0, 50.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 20.4301), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_jaeww"]
+script = ExtResource("14_eok5o")
+ID = "death_burst"
+stick_to_parent = true
+is_friendly = false
+damage = 0.0
+stuns = false
+max_pierce = 1
+time_to_live = 5.0
+rotate_collision_shape = 0.0
+rotate_hurtbox_shape = 0.0
+collision_size_corresponds_to_sprite = false
+hurtbox_size_corresponds_to_sprite = false
+breaks_on_collision = false
+sprite_texture = "uid://blat2421mtirq"
+num_of_frames = 1
+animation_is_continous = false
+has_animation = false
+parent_offset = Vector2(0, 0)
+scale_factor = Vector2(0.03, 0.03)
+scale_growth_rate = 0.0
+scale_curve = SubResource("Curve_jaeww")
+initial_velocity = Vector2(0, 0)
+affected_by_gravity = false
+speed = 0.0
+acceleration = 0.0
+spin_speed = 10.0
+modulate_color = Color(0.996078, 0.682353, 0.203922, 1)
+modulate_outline_color = Color(0.106, 0.122, 0.129, 1)
+fade_start_time = 0.01
+fade_duration = 1.0
+metadata/_custom_type_script = "uid://ch13tt26l8qwb"
+
 [sub_resource type="Curve" id="Curve_4dxnp"]
 _limits = [0.0, 5.0, 0.0, 1.0]
 _data = [Vector2(0, 0.215054), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -317,6 +383,8 @@ collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_m04xd")
 entity_id = "Flamegait"
+can_be_damaged = null
+stunned = true
 
 [node name="MoveAnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MoveStateMachine/dash")
@@ -332,7 +400,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_2nylj"),
 &"Flamegait_Action_Animations": ExtResource("2_m04xd")
 }
-autoplay = "Sprecho_animations/idle"
+autoplay = "RESET"
 
 [node name="AttackPoint" type="Node2D" parent="."]
 
@@ -342,7 +410,18 @@ collision_mask = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_t23hf")
+position = Vector2(-1.19209e-07, 0)
 texture = ExtResource("4_8cuej")
+
+[node name="HealthBar" type="Node2D" parent="."]
+z_index = 10
+script = ExtResource("6_23anw")
+health_color = Color(0.996078, 0.682353, 0.203922, 1)
+low_health_color = Color(0, 0.615686, 0.882353, 1)
+
+[node name="Health" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("5_8cuej")
+hitbox = NodePath("../Hitbox")
 
 [node name="EnemyMoveComponent" type="Node" parent="."]
 script = ExtResource("5_jaeww")
@@ -357,14 +436,14 @@ starting_state = NodePath("idle")
 script = ExtResource("8_jc1k6")
 dash_state = NodePath("../dash")
 move_state = NodePath("../move")
-animation_name = "idle"
 
 [node name="move" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("idle_state", "dash_state")]
 script = ExtResource("9_3iahb")
 idle_state = NodePath("../idle")
 dash_state = NodePath("../dash")
 move_speed = 50.0
-animation_name = "move"
+rotation_speed = 10.0
+rotation_smoothing = 4.0
 
 [node name="dash" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("move_state")]
 script = ExtResource("10_llvbf")
@@ -377,25 +456,48 @@ animation_name = "dash"
 [node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("11_e0hwh")]
 starting_state = NodePath("none")
 
-[node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states")]
+[node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states", "death_state", "stunned_state")]
 script = ExtResource("12_ufifj")
 action_states = [NodePath("../primary"), NodePath("../dash_attack")]
+death_state = NodePath("../death")
+stunned_state = NodePath("../StunnedState")
 action_name = "none"
 
-[node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+[node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state")]
 script = ExtResource("13_0jkp5")
 allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_m04xd")])
+attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_pjbwg")])
+death_state = NodePath("../death")
 action_name = "normal_attack"
 animation_name = "primary_attack"
 
-[node name="dash_attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+[node name="dash_attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state")]
 script = ExtResource("13_0jkp5")
 allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_gh4oh"), SubResource("Resource_8cuej"), ExtResource("15_1k6s2")])
+attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_23anw"), SubResource("Resource_jc1k6"), ExtResource("15_1k6s2")])
+death_state = NodePath("../death")
 action_name = "dash_attack"
+
+[node name="death" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state")]
+script = ExtResource("17_gh4oh")
+immediate_projectiles = false
+none_state = NodePath("../none")
+attack_projectile_resources = Array[ExtResource("14_eok5o")]([SubResource("Resource_jaeww")])
+death_state = NodePath(".")
+action_name = "death"
+animation_name = "death"
+
+[node name="StunnedState" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state", "stunned_state")]
+script = ExtResource("19_jaeww")
+none_state = NodePath("../none")
+stun_time = 0.05
+death_state = NodePath("../death")
+stunned_state = NodePath(".")
+action_name = "stun"
+animation_name = "stun"
+metadata/_custom_type_script = "uid://dyapo17frowtf"
 
 [node name="TrailParticles" type="GPUParticles2D" parent="."]
 z_index = -1
@@ -406,3 +508,5 @@ lifetime = 0.5
 fixed_fps = 60
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_uuy3o")
+
+[connection signal="damaged" from="Hitbox" to="." method="on_damaged"]

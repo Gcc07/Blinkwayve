@@ -21,7 +21,6 @@ var elapsed_time : float = 0.0
 var original_shade_color_alpha : float = 1.0
 
 func _ready() -> void:
-
 	initialize_data()
 	initialize_color_modulation(projectile_resource.modulate_color)
 	initialize_outline_color_modulation(projectile_resource.modulate_outline_color)
@@ -205,7 +204,8 @@ func _physics_process(delta: float) -> void:
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		if collision.get_collider().name == "TileMapLayer":
-			destroy_projectile()
+			if projectile_resource.breaks_on_collision:
+				destroy_projectile()
 	
 	if projectile_resource.speed > 0 && not self.is_on_floor(): # If the projectile is meant to move, and the projectile is airborne
 		if self.scale.x > 0: # If the projectile is facing right
@@ -335,9 +335,10 @@ func on_target_hit() -> void:
 	if pierces_left != 1:
 		pierces_left -= 1
 	elif pierces_left == 1:
-		destroy_projectile(0)
+		if projectile_resource.breaks_on_collision:
+			destroy_projectile()
 
-## On projectile destruction 
+## Destroy projectile with a delay parameter
 func destroy_projectile(delay: float = 0):
 	if delay == 0:
 		queue_free()

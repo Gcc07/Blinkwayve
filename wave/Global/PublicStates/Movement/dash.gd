@@ -10,14 +10,20 @@ var move_dir_y := 0.0
 var smoothing_speed := 10.0 # Higher = snappier, lower = smoother
 
 func enter() -> void:
-	
+	parent.can_be_damaged = false
 	super()
 	moveAnimations.play("RESET")
 	#parent.can_attack = false
 	move_dir_x = get_movement_input_x()
 	move_dir_y =get_movement_input_y()
 	
-	parent.can_be_damaged = false
+	# Immediately face the dash direction
+	if move_dir_x != 0.0 or move_dir_y != 0.0:
+		var target_angle = atan2(move_dir_y, move_dir_x) + rotation_offset
+		current_rotation = target_angle
+		sprite.rotation = target_angle
+	
+	
 	
 	parent.velocity.x = 0
 	#if moveAnimations != null and animation_name != "":
@@ -48,7 +54,9 @@ func process_physics(delta: float) -> State:
 
 	parent.velocity.x = smoothed_x * move_speed
 	parent.velocity.y = smoothed_y * move_speed
-	parent.move_and_slide()
+	
+	if parent.can_move:
+		parent.move_and_slide()
 	if dash_finished:
 		parent.can_be_damaged = true
 		parent.can_attack = true

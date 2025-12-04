@@ -11,7 +11,6 @@ func on_damaged(attack: Attack) -> void:
 	damaged.emit(attack)
 
 func _physics_process(delta: float) -> void:
-
 	super(delta)
 	update_trail_emission()
 	#const_wobble()

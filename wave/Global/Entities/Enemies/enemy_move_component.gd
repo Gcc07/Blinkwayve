@@ -19,7 +19,7 @@ func _ready() -> void:
 	else:
 		raycast = RayCast2D.new()
 		raycast.name = "RayCast2D"
-		add_child(raycast)
+		self.add_child(raycast)
 	
 	# Configure raycast
 	raycast.enabled = true

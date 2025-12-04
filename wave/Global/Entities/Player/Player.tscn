@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dghxy6o5jnawy"]
+[gd_scene load_steps=50 format=3 uid="uid://dghxy6o5jnawy"]
 
 [ext_resource type="Script" uid="uid://bdp6wl5dpnfc5" path="res://Global/Entities/Player/player.gd" id="1_7fgh7"]
 [ext_resource type="Shader" uid="uid://cre0xoj0afvnk" path="res://Assets/Shaders/pixel_outline.gdshader" id="1_78vxg"]
@@ -12,12 +12,17 @@
 [ext_resource type="Script" uid="uid://b5fv7ncb7fxtg" path="res://Global/PublicStates/Movement/dash.gd" id="5_yhqop"]
 [ext_resource type="Script" uid="uid://vdwjy5ar2b6m" path="res://Global/PublicStates/Movement/move.gd" id="6_wf84g"]
 [ext_resource type="Script" uid="uid://bhrw02juhlg76" path="res://Global/Entities/Player/player_move_component.gd" id="7_55fbt"]
+[ext_resource type="Script" uid="uid://buabfex5xpfks" path="res://Global/Classes/health.gd" id="7_nbtck"]
+[ext_resource type="Script" uid="uid://prvcqjji1imw" path="res://Global/Entities/Player/health_bar.gd" id="8_healthbar"]
 [ext_resource type="PackedScene" uid="uid://07qnueve2in3" path="res://Global/StateMachines/action_state_machine.tscn" id="8_yhqop"]
 [ext_resource type="Script" uid="uid://swrkuwy8kc7r" path="res://Global/PublicStates/Action/none_action_state.gd" id="9_55fbt"]
 [ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="10_ncjne"]
 [ext_resource type="Script" uid="uid://ch13tt26l8qwb" path="res://Global/Projectiles/Resources/projectile_resource.gd" id="13_2yk6h"]
 [ext_resource type="Texture2D" uid="uid://d2tjr0rsfvuhh" path="res://Assets/dash_orb.png" id="17_2nylj"]
+[ext_resource type="Script" uid="uid://y4rs71ay7bna" path="res://Global/PublicStates/Action/death_action_state.gd" id="18_hih3k"]
 [ext_resource type="Resource" uid="uid://cmx6kkhsaij8f" path="res://Assets/FX/blue_light_fx.tres" id="19_hih3k"]
+[ext_resource type="Script" uid="uid://dyapo17frowtf" path="res://Global/PublicStates/Action/stunned_action_state.gd" id="19_nbtck"]
+[ext_resource type="Script" uid="uid://brknvi54kx8ox" path="res://Utilities/GUI/current_state_shower.gd" id="22_vulh3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_isqt6"]
 shader = ExtResource("1_78vxg")
@@ -85,6 +90,30 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../Sprite2D:material:shader_parameter/outline_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../Sprite2D:material:shader_parameter/outline_size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2nylj"]
@@ -173,13 +202,13 @@ shader_parameter/shade_color = Color(1, 1, 1, 0)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_isqt6"]
 
-[sub_resource type="Resource" id="Resource_l8rai"]
+[sub_resource type="Resource" id="Resource_nbtck"]
 resource_local_to_scene = true
 script = ExtResource("13_2yk6h")
 ID = "Rasengan"
 stick_to_parent = false
 is_friendly = true
-damage = 5.0
+damage = 1.0
 stuns = true
 max_pierce = 1
 time_to_live = 2.0
@@ -210,13 +239,13 @@ metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nbtck"]
 
-[sub_resource type="Resource" id="Resource_55od0"]
+[sub_resource type="Resource" id="Resource_1s405"]
 resource_local_to_scene = true
 script = ExtResource("13_2yk6h")
 ID = "Rasengan"
 stick_to_parent = false
 is_friendly = true
-damage = 5.0
+damage = 1.0
 stuns = true
 max_pierce = 1
 time_to_live = 2.0
@@ -246,13 +275,13 @@ metadata/_custom_type_script = "uid://ch13tt26l8qwb"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hih3k"]
 
-[sub_resource type="Resource" id="Resource_hih3k"]
+[sub_resource type="Resource" id="Resource_vulh3"]
 resource_local_to_scene = true
 script = ExtResource("13_2yk6h")
 ID = "Rasengan"
 stick_to_parent = false
 is_friendly = true
-damage = 5.0
+damage = 1.0
 stuns = true
 max_pierce = 1
 time_to_live = 2.0
@@ -290,7 +319,7 @@ _limits = [-50.0, 50.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 106.678, 0, 0, Vector2(0.241379, 8.06452), 1.73238, 1.73238, 0, 0, Vector2(1, 1.61291), -3.957, -3.957, 0, 0]
 point_count = 3
 
-[sub_resource type="Resource" id="Resource_nbtck"]
+[sub_resource type="Resource" id="Resource_156wy"]
 resource_local_to_scene = true
 script = ExtResource("13_2yk6h")
 ID = "Rasengan"
@@ -335,7 +364,7 @@ _limits = [-50.0, 50.0, 0.0, 2.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.152174, 3.76344), 0.0, 0.0, 0, 0, Vector2(0.826087, -5.91398), -3.957, -3.957, 0, 0]
 point_count = 3
 
-[sub_resource type="Resource" id="Resource_1s405"]
+[sub_resource type="Resource" id="Resource_1qiao"]
 resource_local_to_scene = true
 script = ExtResource("13_2yk6h")
 ID = "Rasengan"
@@ -411,7 +440,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_2nylj"),
 &"Sprecho_Action_Animations": ExtResource("4_2nylj")
 }
-autoplay = "Sprecho_animations/idle"
+autoplay = "RESET"
 
 [node name="AttackPoint" type="Node2D" parent="."]
 
@@ -420,6 +449,18 @@ autoplay = "Sprecho_animations/idle"
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_ygpja")
 texture = ExtResource("2_usju2")
+
+[node name="HealthBar" type="Node2D" parent="."]
+z_index = 10
+script = ExtResource("8_healthbar")
+health_color = Color(0.172549, 0.909804, 0.960784, 1)
+low_health_color = Color(0, 0.6, 0.858824, 1)
+
+[node name="Health" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("7_nbtck")
+hitbox = NodePath("../Hitbox")
+max_health = 20.0
+metadata/_custom_type_script = "uid://buabfex5xpfks"
 
 [node name="PlayerMoveComponent" type="Node" parent="."]
 script = ExtResource("7_55fbt")
@@ -451,25 +492,54 @@ animation_name = "dash"
 [node name="ActionStateMachine" parent="." node_paths=PackedStringArray("starting_state") instance=ExtResource("8_yhqop")]
 starting_state = NodePath("none")
 
-[node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states")]
+[node name="none" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("action_states", "death_state", "stunned_state")]
 script = ExtResource("9_55fbt")
 action_states = [NodePath("../dash_attack"), NodePath("../primary")]
+death_state = NodePath("../DeathState")
+stunned_state = NodePath("../StunnedState")
 action_name = "none"
 
-[node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+[node name="primary" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state", "stunned_state")]
 script = ExtResource("10_ncjne")
 allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resources = Array[ExtResource("13_2yk6h")]([SubResource("Resource_l8rai"), SubResource("Resource_55od0"), SubResource("Resource_hih3k")])
+attack_projectile_resources = Array[ExtResource("13_2yk6h")]([SubResource("Resource_nbtck"), SubResource("Resource_1s405"), SubResource("Resource_vulh3")])
+death_state = NodePath("../DeathState")
+stunned_state = NodePath("../StunnedState")
 action_name = "normal_attack"
 animation_name = "primary_attack"
 
-[node name="dash_attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state")]
+[node name="dash_attack" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state", "stunned_state")]
 script = ExtResource("10_ncjne")
 allow_movement = true
 none_state = NodePath("../none")
-attack_projectile_resources = Array[ExtResource("13_2yk6h")]([SubResource("Resource_nbtck"), SubResource("Resource_1s405"), ExtResource("19_hih3k")])
+attack_projectile_resources = Array[ExtResource("13_2yk6h")]([SubResource("Resource_156wy"), SubResource("Resource_1qiao"), ExtResource("19_hih3k")])
+death_state = NodePath("../DeathState")
+stunned_state = NodePath("../StunnedState")
 action_name = "dash_attack"
+
+[node name="DeathState" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("death_state", "stunned_state")]
+script = ExtResource("18_hih3k")
+death_state = NodePath(".")
+stunned_state = NodePath("../StunnedState")
+action_name = "death"
+animation_name = "death"
+metadata/_custom_type_script = "uid://y4rs71ay7bna"
+
+[node name="StunnedState" type="Node" parent="ActionStateMachine" node_paths=PackedStringArray("none_state", "death_state", "stunned_state")]
+script = ExtResource("19_nbtck")
+none_state = NodePath("../none")
+death_state = NodePath("../DeathState")
+stunned_state = NodePath(".")
+action_name = "death"
+metadata/_custom_type_script = "uid://dyapo17frowtf"
+
+[node name="current_state" type="Label" parent="ActionStateMachine"]
+offset_left = -20.0
+offset_top = -36.0
+offset_right = 20.0
+offset_bottom = -13.0
+script = ExtResource("22_vulh3")
 
 [node name="Dashes" type="Sprite2D" parent="."]
 texture_repeat = 2
@@ -488,5 +558,7 @@ fixed_fps = 60
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_trail")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionBody" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_55od0")
+
+[connection signal="damaged" from="Hitbox" to="." method="_on_hitbox_damaged"]

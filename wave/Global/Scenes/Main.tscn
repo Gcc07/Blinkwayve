@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdyoidhrj150h"]
+[gd_scene load_steps=6 format=3 uid="uid://bdyoidhrj150h"]
 
 [ext_resource type="PackedScene" uid="uid://dghxy6o5jnawy" path="res://Global/Entities/Player/Player.tscn" id="1_ponov"]
 [ext_resource type="Material" uid="uid://c15rgl5vuyoix" path="res://Assets/FX/blue_swirl.tres" id="2_45k01"]
 [ext_resource type="Script" uid="uid://dyfk6yt4gis8l" path="res://Utilities/GUI/FPS_counter.gd" id="3_2n1qi"]
+[ext_resource type="Script" uid="uid://dq81ol8ffoewo" path="res://Utilities/GUI/enemy_spawner.gd" id="4_5qatx"]
 [ext_resource type="PackedScene" uid="uid://c167mxfdcy2uo" path="res://Global/Entities/Enemies/Flamegait/Flaimegait.tscn" id="4_s3rtn"]
 
 [node name="Main" type="Node2D"]
@@ -41,13 +42,23 @@ offset_bottom = 23.0
 grow_horizontal = 0
 script = ExtResource("3_2n1qi")
 
+[node name="Button" type="Button" parent="Control/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -67.0
+offset_top = 44.0
+offset_right = 58.0
+offset_bottom = 180.0
+grow_horizontal = 0
+scale = Vector2(0.507703, 0.454289)
+text = "Press to spawn"
+script = ExtResource("4_5qatx")
+
 [node name="Flaimegait" parent="." instance=ExtResource("4_s3rtn")]
-position = Vector2(223, 181)
-
-[node name="Flaimegait2" parent="." instance=ExtResource("4_s3rtn")]
-position = Vector2(223, 181)
-
-[node name="Flaimegait3" parent="." instance=ExtResource("4_s3rtn")]
-position = Vector2(223, 181)
+position = Vector2(237, 82)
+stunned = false
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+
+[connection signal="pressed" from="Control/CanvasLayer/Button" to="Control/CanvasLayer/Button" method="_on_button_pressed"]
