@@ -17,8 +17,8 @@ func enter() -> void:
 		actionAnimations.play(str(parent.entity_id)+"_Action_Animations/" + animation_name)
 
 func _on_hitbox_damaged(attack: Attack):
-	if attack.stuns == true:
-		parent.stunned = true
+	# Stun is handled by Health component, no need to set it here
+	pass
 
 # Pass the inputs from the action components into the sub-states
 

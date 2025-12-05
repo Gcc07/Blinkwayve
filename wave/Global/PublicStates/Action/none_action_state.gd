@@ -19,8 +19,8 @@ func enter() -> void:
 		moveAnimations.active = true
 
 func damaged(attack: Attack):
-	if attack.stuns == true:
-		parent.stunned = true
+	# Stun is handled by Health component, no need to set it here
+	pass
 
 func process_physics(delta: float) -> ActionState:
 	for action in action_states:
