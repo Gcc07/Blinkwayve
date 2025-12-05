@@ -1,3 +1,4 @@
+class_name MovementStateMachine
 extends Node
 
 @export

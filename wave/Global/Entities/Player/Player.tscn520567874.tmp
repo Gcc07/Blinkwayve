@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://vdwjy5ar2b6m" path="res://Global/PublicStates/Movement/move.gd" id="6_wf84g"]
 [ext_resource type="Script" uid="uid://bhrw02juhlg76" path="res://Global/Entities/Player/player_move_component.gd" id="7_55fbt"]
 [ext_resource type="Script" uid="uid://buabfex5xpfks" path="res://Global/Classes/health.gd" id="7_nbtck"]
+[ext_resource type="Script" uid="uid://prvcqjji1imw" path="res://Global/Entities/Player/health_bar.gd" id="8_healthbar"]
 [ext_resource type="PackedScene" uid="uid://07qnueve2in3" path="res://Global/StateMachines/action_state_machine.tscn" id="8_yhqop"]
 [ext_resource type="Script" uid="uid://swrkuwy8kc7r" path="res://Global/PublicStates/Action/none_action_state.gd" id="9_55fbt"]
 [ext_resource type="Script" uid="uid://bf0r8p5y4wwp8" path="res://Global/PublicStates/Action/Attack/attack_state.gd" id="10_ncjne"]
@@ -420,9 +421,6 @@ scale_curve = SubResource("CurveTexture_55od0")
 [sub_resource type="CircleShape2D" id="CircleShape2D_55od0"]
 radius = 7.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_vulh3"]
-font_size = 8
-
 [node name="Sprecho" type="CharacterBody2D"]
 material = SubResource("ShaderMaterial_isqt6")
 script = ExtResource("1_7fgh7")
@@ -451,6 +449,12 @@ autoplay = "RESET"
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_ygpja")
 texture = ExtResource("2_usju2")
+
+[node name="HealthBar" type="Node2D" parent="."]
+z_index = 10
+script = ExtResource("8_healthbar")
+health_color = Color(0.172549, 0.909804, 0.960784, 1)
+low_health_color = Color(0, 0.6, 0.858824, 1)
 
 [node name="Health" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("7_nbtck")
@@ -527,8 +531,7 @@ script = ExtResource("19_nbtck")
 none_state = NodePath("../none")
 death_state = NodePath("../DeathState")
 stunned_state = NodePath(".")
-action_name = "stun"
-animation_name = "stun"
+action_name = "death"
 metadata/_custom_type_script = "uid://dyapo17frowtf"
 
 [node name="Dashes" type="Sprite2D" parent="."]
@@ -552,11 +555,10 @@ process_material = SubResource("ParticleProcessMaterial_trail")
 shape = SubResource("CircleShape2D_55od0")
 
 [node name="current_state" type="Label" parent="."]
-offset_left = -86.0
-offset_top = -68.0
-offset_right = 36.0
-offset_bottom = -15.0
-label_settings = SubResource("LabelSettings_vulh3")
+offset_left = -20.0
+offset_top = -36.0
+offset_right = 20.0
+offset_bottom = -13.0
 script = ExtResource("22_vulh3")
 
 [connection signal="damaged" from="Hitbox" to="." method="_on_hitbox_damaged"]

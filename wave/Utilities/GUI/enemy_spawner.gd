@@ -5,7 +5,8 @@ var spawned_entity
 @export var spawn_offset : Vector2 = Vector2(200, 0)  # Offset from player position
 
 func _ready() -> void:
-	pressed.connect(_on_button_pressed)
+	if not is_connected("pressed", _on_button_pressed):
+		pressed.connect(_on_button_pressed)
 
 func _on_button_pressed() -> void:
 	if not entity:

@@ -14,6 +14,7 @@ var smoothing_speed := 8.0 # Higher = snappier, lower = smoother
 
 var current_speed = move_speed
 var extra_speed_limit = 50
+const MOVEMENT_THRESHOLD := 0.01 # Threshold for considering movement as stopped (accounts for floating point precision)
 
 func process_input(event: InputEvent) -> MovementState:
 	return null
@@ -30,7 +31,7 @@ func process_physics(delta: float) -> MovementState:
 	if not current_speed >= max_speed_after_acceleration && get_movement_input_x() != 0 and get_movement_input_y() != 0:
 		current_speed += 2
 
-	if get_movement_input_x() == 0 and get_movement_input_y() == 0:
+	if abs(get_movement_input_x()) < MOVEMENT_THRESHOLD and abs(get_movement_input_y()) < MOVEMENT_THRESHOLD:
 		if current_speed > move_speed:
 			current_speed -= 2
 	
@@ -47,7 +48,8 @@ func process_physics(delta: float) -> MovementState:
 	if parent.can_move:
 		parent.move_and_slide()
 	
-	if move_dir_x == 0 and move_dir_y == 0 :
+	# Use threshold check instead of exact equality for lerped values
+	if abs(move_dir_x) < MOVEMENT_THRESHOLD and abs(move_dir_y) < MOVEMENT_THRESHOLD:
 		return idle_state
 	if parent.can_move == false:
 		return idle_state

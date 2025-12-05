@@ -336,9 +336,9 @@ func on_target_hit() -> void:
 		pierces_left -= 1
 	elif pierces_left == 1:
 		if projectile_resource.breaks_on_collision:
-			destroy_projectile()
+			destroy_projectile(0)
 
-## Destroy projectile with a delay parameter
+## On projectile destruction 
 func destroy_projectile(delay: float = 0):
 	if delay == 0:
 		queue_free()

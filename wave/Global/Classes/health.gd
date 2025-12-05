@@ -23,8 +23,7 @@ func on_damaged(attack: Attack):
 		return
 	if !thing_being_attacked.can_be_damaged:
 		return
-	if thing_being_attacked.can_be_damaged == false:
-		health -= attack.damage
+	health -= attack.damage
 	health_changed.emit(health)
 	if attack.stuns:
 		thing_being_attacked.stunned = true

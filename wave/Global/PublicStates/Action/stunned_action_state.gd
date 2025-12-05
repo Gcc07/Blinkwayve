@@ -16,6 +16,7 @@ func enter() -> void:
 	actionAnimations.active = true
 	moveAnimations.active = false
 	if animation_name == "":
+		actionAnimations.active = false
 		sprite.material.set_shader_parameter("shade_color", Color(1.0, 1.0, 1.0))
 
 func _ready(): 
@@ -33,6 +34,7 @@ func process_physics(delta: float) -> ActionState:
 	if not parent.stunned:
 		if animation_name == "":
 			sprite.material.set_shader_parameter("shade_color", Color(1.0, 1.0, 1.0, 0.0))
+			actionAnimations.active = true
 		parent.can_be_damaged = true
 		return none_state
 	else: 

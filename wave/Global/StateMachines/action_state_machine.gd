@@ -1,3 +1,4 @@
+class_name ActionStateMachine
 extends Node
 
 # Action State Machine. Controls the logic of actions of an entity. 

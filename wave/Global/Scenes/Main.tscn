@@ -57,6 +57,7 @@ script = ExtResource("4_5qatx")
 
 [node name="Flaimegait" parent="." instance=ExtResource("4_s3rtn")]
 position = Vector2(237, 82)
+can_be_damaged = true
 stunned = false
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
